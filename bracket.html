@@ -60,23 +60,24 @@ h3 {
   // Start drawing left side
 
   var i;
+  var loc = "https://raw.githubusercontent.com/edbrasil/aus-open/master/"
 
   d3.queue()
-    .defer(d3.json, "Round1.json")
-    .defer(d3.json, "Round2.json")
-    .defer(d3.json, "Round3.json")
-    .defer(d3.json, "Round4.json")
-    .defer(d3.json, "Quarterfinals.json")
-    .defer(d3.json, "Semifinals.json")
-    .defer(d3.json, "Final.json")
-    .defer(d3.json, "Winner.json")
-    .defer(d3.json, "c_round2.json")
-    .defer(d3.json, "C_round3.json")
-    .defer(d3.json, "C_round4.json")
-    .defer(d3.json, "C_quarterfinal.json")
-    .defer(d3.json, "C_semifinal.json")
-    .defer(d3.json, "C_final.json")
-    .defer(d3.json, "C_winner.json")
+    .defer(d3.json, loc + "Round1.json")
+    .defer(d3.json, loc + "Round2.json")
+    .defer(d3.json, loc + "Round3.json")
+    .defer(d3.json, loc + "Round4.json")
+    .defer(d3.json, loc + "Quarterfinals.json")
+    .defer(d3.json, loc + "Semifinals.json")
+    .defer(d3.json, loc + "Final.json")
+    .defer(d3.json, loc + "Winner.json")
+    .defer(d3.json, loc + "c_round2.json")
+    .defer(d3.json, loc + "C_round3.json")
+    .defer(d3.json, loc + "C_round4.json")
+    .defer(d3.json, loc + "C_quarterfinal.json")
+    .defer(d3.json, loc + "C_semifinal.json")
+    .defer(d3.json, loc + "C_final.json")
+    .defer(d3.json, loc + "C_winner.json")
 
     .await(function(error,file1,file2, file3, file4, file5, file6, file7, file8, c_file2, c_file3, c_file4, c_file5, c_file6, c_file7, c_file8) {
       console.log(c_file5)
