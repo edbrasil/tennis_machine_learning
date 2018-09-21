@@ -60,16 +60,17 @@ h3 {
   // Start drawing left side
 
   var i;
+  var loc = "https://raw.githubusercontent.com/edbrasil/aus-open/master/"
 
   d3.queue()
-    .defer(d3.json, "Round1.json")
-    .defer(d3.json, "Round2.json")
-    .defer(d3.json, "Round3.json")
-    .defer(d3.json, "Round4.json")
-    .defer(d3.json, "Quarterfinals.json")
-    .defer(d3.json, "Semifinals.json")
-    .defer(d3.json, "Final.json")
-    .defer(d3.json, "Winner.json")
+    .defer(d3.json, loc + "Round1.json")
+    .defer(d3.json, loc + "Round2.json")
+    .defer(d3.json, loc + "Round3.json")
+    .defer(d3.json, loc + "Round4.json")
+    .defer(d3.json, loc + "Quarterfinals.json")
+    .defer(d3.json, loc + "Semifinals.json")
+    .defer(d3.json, loc + "Final.json")
+    .defer(d3.json, loc + "Winner.json")
 
     .await(function(error,file1,file2, file3, file4, file5, file6, file7, file8) {
 
