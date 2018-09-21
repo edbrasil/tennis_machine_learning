@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<head>
+  <meta charset="utf-8">
+  <title>Eduardo's Bracket - US Open 2018</title>
+  <meta name="viewport" content="width=device-width">
+  <style type="text/css">
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}*
+h2 {
+  font: 12px;
+}
+h3 {
+  font: 24px sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+.size1 {      
+  font: 10px sans-serif;
+  }
+.size2 {      
+  font: 12px sans-serif;
+  }
+.size3 {      
+  font: 14px sans-serif;
+  }
+.winn{
+  font: 18px sans-serif;
+  font-weight: bold;
+  }
+.winnp{
+  font: 14px sans-serif;
+  }
+ </style>
+
+</head>
+<body>
+  <h2><br></h2>
+  <h3> US OPEN 2018 - Bracket </h3>
+  <h2><br></h2>
+  <div width="1750" height="1500"></div>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script>
+  
+  var height = 1500,
+      width = 1750,
+      curve_width = 20,
+      entry_width = (.7*width - 10*curve_width)/11
+      top_buffer = 2;
+
+  var svg = d3.select("div").append("svg")
+                          .attr("height", height)
+                          .attr("width", width);
+
+  var rounds = [64, 32, 16, 8, 4, 2, 1]
+
+  // Start drawing left side
+
+  var i;
+
+  d3.queue()
+    .defer(d3.json, "Round1.json")
+    .defer(d3.json, "Round2.json")
+    .defer(d3.json, "Round3.json")
+    .defer(d3.json, "Round4.json")
+    .defer(d3.json, "Quarterfinals.json")
+    .defer(d3.json, "Semifinals.json")
+    .defer(d3.json, "Final.json")
+    .defer(d3.json, "Winner.json")
+
+    .await(function(error,file1,file2, file3, file4, file5, file6, file7, file8) {
+
+
+      rounds.forEach( function (d, j) {
+        var entry_height = height/d;
+        if (j > 0) {
+          for (i = 0; i < rounds[j-1]; i++) {
+            var x = (entry_width)*j + (j-1)*curve_width;
+            var y = (i + 0.5)*(entry_height/2)+top_buffer;
+            var a = i % 2 == 0 ? 0.25:-0.25;
+              svg.append("path").attr("d", "M" + x + " " + y + "c10,0 10," + a*entry_height + " 20," + a*entry_height).attr("stroke", "black").attr("stroke-width", 3);
+          }
+        }
+        for (i = 0; i < d; i++){
+          var x = (entry_width + curve_width)*j;
+          var y = (i + 0.5)*entry_height+top_buffer;
+          svg.append("path").attr("id","lpath" + j + "_" + i).attr("d", "M" + x + " " + y + " l " + entry_width + " 0").attr("stroke", "black").attr("stroke-width", 3);
+          svg.append("text")
+            // .attr("transform","scale(-1,1)")
+            // .attr("dx", - entry_width)
+            .attr("dy",function(d){if (j == 0){return "-2"} else {return "-5"}})
+            .append("textPath")
+            .attr("xlink:href","#lpath" + j + "_" + i)
+            .attr("startOffset","10%")
+            .attr("class",function (d) {if (j == 0) {return "size1"} 
+                                        else if (j == 1) {return "size2"}
+                                        else {return "size3"}})
+            .text(function(d) {if (j==0) {return file1[i][0]}
+                               else if (j==1) {return file2[i][0]}
+                               else if (j==2) {return file3[i][0]}
+                               else if (j==3) {return file4[i][0]}
+                               else if (j==4) {return file5[i][0]}
+                               else if (j==5) {return file6[i][0]}
+                               else if (j==6) {return file7[i][0]}
+                               else {return "J Fowler"}});
+        }
+      });
+
+      var right = svg.append("g").attr("transform", "translate(" + width + ",0) scale(-1,1)")
+
+      rounds.forEach( function (d, j) {
+        var entry_height = height/d;
+        if (j > 0) {
+          for (i = 0; i < rounds[j-1]; i++) {
+            var x =(entry_width)*j + (j-1)*curve_width;
+            var y = (i + 0.5)*(entry_height/2)+top_buffer;
+            var a = i % 2 == 0 ? 0.25:-0.25;
+              right.append("path").attr("d", "M" + x + " " + y + "c10,0 10," + a*entry_height + " 20," + a*entry_height).attr("stroke", "black").attr("stroke-width", 3);
+          }
+        }
+        for (i = 0; i < d; i++){
+          var x = (entry_width + curve_width)*j;
+          var entry_pos = 2*x + entry_width;
+          var y = (i + 0.5)*entry_height+top_buffer;
+          right.append("path").attr("id","rpath" + j + "_" + i).attr("d", "M" + x + " " + y + " l " + entry_width + " 0").attr("stroke", "black").attr("stroke-width", 3);
+          right.append("text")
+            .attr("transform","translate(" + entry_pos +",0) scale(-1,1)")
+            .attr("dy",function(d){if (j == 0){return "-2"} else {return "-5"}})
+            .append("textPath")
+            .attr("xlink:href","#rpath" + j + "_" + i)
+            .attr("startOffset","10%")
+            .attr("class",function (d) {if (j == 0) {return "size1"} 
+                                        else if (j == 1) {return "size2"}
+                                        else {return "size3"}})
+            .text(function(d) {if (j==0) {return file1[i+64][0]}
+                               else if (j==1) {return file2[i+32][0]}
+                               else if (j==2) {return file3[i+16][0]}
+                               else if (j==3) {return file4[i+8][0]}
+                               else if (j==4) {return file5[i+4][0]}
+                               else if (j==5) {return file6[i+2][0]}
+                               else if (j==6) {return file7[i+1][0]}
+                               else {return "L Umberger"}});
+        }
+      });
+
+      var winner = svg.append("g")
+
+      var borderPath = winner.append("rect")
+        .attr("width",entry_width*1.5)
+        .attr("height", height * 0.05)
+        .attr("stroke","black")
+        .attr("fill","white")
+        .attr("fill-opacity",100)
+        .attr("x",width/2 - ((entry_width*1.5)/2))
+        .attr("y",height*0.1);
+
+      var winnerText = winner.append("text")
+        .attr("x",width/2-((entry_width*1.5)/2)+entry_width*0.4)
+        .attr("y",height*(0.1 + 0.014))
+        .attr("class","winn")
+        .text("Winner:")
+
+      var winnerFinal = winner.append("text")
+        .attr("x",width/2-((entry_width*1.5)/2)+entry_width*0.34)
+        .attr("y",height*(0.1 + 0.035))
+        .attr("class","winnp")
+        .text(file8[0][1])
+
+      var logo_width = 320,
+          logo_height = 180;
+
+      var logo = svg.append("g").attr("width",logo_width).attr("height",logo_height)
+
+      var logo_img = logo.append("svg:image")
+        .attr("xlink:href","us_open.jpg")
+        .attr("x", width/2- logo_width/2 )
+        .attr("y", height/5)
+        .attr("height",logo_height)
+        .attr("width",logo_width)
+  });
+
+</script>
+</body>
