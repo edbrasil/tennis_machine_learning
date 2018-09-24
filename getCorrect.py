@@ -8,6 +8,7 @@ Created on Fri Sep 21 11:18:33 2018
 import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
+import json
 
 
 def getBracket (new_bracket = True, num_players = 0, column = 11, 
@@ -56,6 +57,7 @@ def getBracket (new_bracket = True, num_players = 0, column = 11,
             df1.dropna(inplace=True)
             #print (~df1.str.contains(r'[0-9]'))
             df1 = df1.loc[~df1.str.contains(r'[0-9]')]
+            df1 = df1[df1 !=""]
             df1 = df1[df1 != "WC"]
             #print(df1)
 
@@ -72,12 +74,46 @@ def getBracket (new_bracket = True, num_players = 0, column = 11,
 def getCorrectRound(col = 11, r_name = "round2", t_s = 4, t_e=12):
     df = getBracket(new_bracket = True, num_players = 0,
                     column = col, t_start = t_s, t_end = t_e)
-    df.to_json("C_" + r_name.replace(" ","") + ".json",orient="values")
+    #df.to_json("C_" + r_name.replace(" ","") + ".json",orient="values")
+    
+    return df
 
-#getCorrectRound(col=11,r_name = "round2")
-#getCorrectRound(col= 12, r_name = "round3")
-#getCorrectRound(col=13, r_name = "round4")
-getCorrectRound(col = 2,r_name = "quarterfinal", t_s =3, t_e=4)
-getCorrectRound(col = 3,r_name = "semifinal", t_s =3, t_e=4)
-getCorrectRound(col = 4,r_name = "final", t_s=3, t_e=4)
-#print(df)
+def getChampion():
+    url = "https://en.wikipedia.org/wiki/2018_US_Open_%E2%80%93_Men%27s_Singles#Draw"
+    #print(url)
+
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    
+    browser = webdriver.Chrome(chrome_options=options)
+    browser.get(url)
+    soup = BeautifulSoup(browser.page_source, "lxml")
+    browser.close()
+
+    soup = soup.findAll('table')[0].findAll('a')[2].text
+    df1 = pd.DataFrame([str(soup)])
+    
+    df1.columns = ["Name"]
+    
+    return df1
+
+
+df2 = getCorrectRound(col=11,r_name = "round2")
+df3 = getCorrectRound(col= 12, r_name = "round3")
+df4 = getCorrectRound(col=13, r_name = "round4")
+df5 = getCorrectRound(col = 2,r_name = "quarterfinal", t_s =3, t_e=4)
+df6 = getCorrectRound(col = 3,r_name = "semifinal", t_s =3, t_e=4)
+df7 = getCorrectRound(col = 4,r_name = "final", t_s=3, t_e=4)
+df8 = getChampion()
+
+dict = {"Round 2" : df2.values.tolist(),
+        "Round 3" : df3.values.tolist(),
+        "Round 4" : df4.values.tolist(),
+        "Quarterfinal" : df5.values.tolist(),
+        "Semifinal" : df6.values.tolist(),
+        "Final" : df7.values.tolist(),
+        "Winner" : df8.values.tolist()}
+
+with open('C_picks.json', 'w') as fp:
+    json.dump(dict, fp)
+

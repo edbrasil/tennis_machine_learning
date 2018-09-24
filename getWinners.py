@@ -10,6 +10,7 @@ import pandas as pd
 from getBracket import getBracket
 from getHeadToHead import getH2H
 from functions_tennis import currentRank
+import json
 #from functions_tennis import isFloat
 
 """
@@ -68,3 +69,15 @@ df_q = loopRounds(df_r4, "Quarterfinals")
 df_s = loopRounds(df_q, "Semifinals")
 df_f = loopRounds(df_s, "Final")
 df_w = loopRounds(df_f, "Winner")
+
+dict = {"Round 1" : df_r1.values.tolist(),
+        "Round 2" : df_r2.values.tolist(),
+        "Round 3" : df_r3.values.tolist(),
+        "Round 4" : df_r4.values.tolist(),
+        "Quarterfinal" : df_q.values.tolist(),
+        "Semifinal" : df_s.values.tolist(),
+        "Final" : df_f.values.tolist(),
+        "Winner" : df_w.values.tolist()}
+
+with open('Picks.json', 'w') as fp:
+    json.dump(dict, fp)
