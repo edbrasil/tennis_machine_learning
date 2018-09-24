@@ -80,24 +80,27 @@ h3 {
           }
         }
         for (i = 0; i < d; i++){
+          function correct(j,i){
+              if (j==1) {if (file["Round 2"][i][0] == c_file["Round 2"][i]) {return "green"} else {return "red"}}
+              else if (j==2) {if (file["Round 3"][i][0] == c_file["Round 3"][i]) {return "green"} else {return "red"}}
+              else if (j==3) {if (file["Round 4"][i][0] == c_file["Round 4"][i]) {return "green"} else {return "red"}}
+              else if (j==4) {if (file["Quarterfinal"][i][0] == c_file["Quarterfinal"][i]) {return "green"} else {return "red"}}
+              else if (j==5) {if (file["Semifinal"][i][0] == c_file["Semifinal"][i]) {return "green"} else {return "red"}}
+              else if (j==6) {if (file["Final"][i][0] == c_file["Final"][i]) {return "green"} else {return "red"}}
+              else {return "black"}
+                              }
+          var right_pick = correct(j,i)                        
+          //console.log(right_pick)
           var x = (entry_width + curve_width)*j;
           var y = (i + 0.5)*entry_height+top_buffer;
           svg.append("path").attr("id","lpath" + j + "_" + i).attr("d", "M" + x + " " + y + " l " + entry_width + " 0").attr("stroke", "black").attr("stroke-width", 3);
           svg.append("text")
-            .attr("fill", function (d) {if (j==1) {if (file["Round 2"][i][0] == c_file["Round 2"][i]) {return "green"} else {return "red"}}
-                                        if (j==2) {if (file["Round 3"][i][0] == c_file["Round 3"][i]) {return "green"} else {return "red"}}
-                                        if (j==3) {if (file["Round 4"][i][0] == c_file["Round 4"][i]) {return "green"} else {return "red"}}
-                                        if (j==4) {if (file["Quarterfinal"][i][0] == c_file["Quarterfinal"][i]) {return "green"} else {return "red"}}
-                                        if (j==5) {if (file["Semifinal"][i][0] == c_file["Semifinal"][i]) {return "green"} else {return "red"}}
-                                        if (j==6) {if (file["Final"][i][0] == c_file["Final"][i]) {return "green"} else {return "red"}}
-                                                    else {return "black"}
-                                                   })
-
-            //.attr("fill","green")
+            .attr("fill", right_pick)
             .attr("dy",function(d){if (j == 0){return "-2"} else {return "-5"}})
             .append("textPath")
             .attr("xlink:href","#lpath" + j + "_" + i)
             .attr("startOffset","10%")
+            .attr("text-decoration",function(d){if (right_pick == "red"){return "line-through"}})
             .attr("class",function (d) {if (j == 0) {return "size1"} 
                                         else if (j == 1) {return "size2"}
                                         else {return "size3"}})
@@ -108,7 +111,8 @@ h3 {
                                else if (j==4) {return file["Quarterfinal"][i][0]}
                                else if (j==5) {return file["Semifinal"][i][0]}
                                else if (j==6) {return file["Final"][i][0]}
-                               else {return "J Fowler"}});
+                               else {return "J Fowler"}})
+            ;
         }
       });
 
@@ -125,24 +129,28 @@ h3 {
           }
         }
         for (i = 0; i < d; i++){
+            function correct(j,i){
+              if (j==1) {if (file["Round 2"][i+32][0] == c_file["Round 2"][i+32]) {return "green"} else {return "red"}}
+              else if (j==2) {if (file["Round 3"][i+16][0] == c_file["Round 3"][i+16]) {return "green"} else {return "red"}}
+              else if (j==3) {if (file["Round 4"][i+8][0] == c_file["Round 4"][i+8]) {return "green"} else {return "red"}}
+              else if (j==4) {if (file["Quarterfinal"][i+4][0] == c_file["Quarterfinal"][i+4]) {return "green"} else {return "red"}}
+              else if (j==5) {if (file["Semifinal"][i+2][0] == c_file["Semifinal"][i+2]) {return "green"} else {return "red"}}
+              else if (j==6) {if (file["Final"][i+1][0] == c_file["Final"][i+1]) {return "green"} else {return "red"}}
+              else {return "black"}
+                              }
+          var right_pick = correct(j,i)  
           var x = (entry_width + curve_width)*j;
           var entry_pos = 2*x + entry_width;
           var y = (i + 0.5)*entry_height+top_buffer;
           right.append("path").attr("id","rpath" + j + "_" + i).attr("d", "M" + x + " " + y + " l " + entry_width + " 0").attr("stroke", "black").attr("stroke-width", 3);
           right.append("text")
-            .attr("fill", function (d) {if (j==1) {if (file["Round 2"][i+32][0] == c_file["Round 2"][i+32]) {return "green"} else {return "red"}}
-                                        if (j==2) {if (file["Round 3"][i+16][0] == c_file["Round 3"][i+16]) {return "green"} else {return "red"}}
-                                        if (j==3) {if (file["Round 4"][i+8][0] == c_file["Round 4"][i+8]) {return "green"} else {return "red"}}
-                                        if (j==4) {if (file["Quarterfinal"][i+4][0] == c_file["Quarterfinal"][i+4]) {return "green"} else {return "red"}}
-                                        if (j==5) {if (file["Semifinal"][i+2][0] == c_file["Semifinal"][i+2]) {return "green"} else {return "red"}}
-                                        if (j==6) {if (file["Final"][i+1][0] == c_file["Final"][i+1]) {return "green"} else {return "red"}}
-                                          else {return "black"}
-                                         })
+            .attr("fill", right_pick)
             .attr("transform","translate(" + entry_pos +",0) scale(-1,1)")
             .attr("dy",function(d){if (j == 0){return "-2"} else {return "-5"}})
             .append("textPath")
             .attr("xlink:href","#rpath" + j + "_" + i)
             .attr("startOffset","10%")
+            .attr("text-decoration",function(d){if (right_pick == "red"){return "line-through"}})
             .attr("class",function (d) {if (j == 0) {return "size1"} 
                                         else if (j == 1) {return "size2"}
                                         else {return "size3"}})
@@ -179,6 +187,7 @@ h3 {
         .attr("y",height*(0.1 + 0.035))
         .attr("class","winnp")
         .attr("fill",function(d){if (file["Winner"][0][0] == c_file["Winner"][0][0]){return "green"} else {return "red"}})
+        .attr("text-decoration",function(d){if (file["Winner"][0][0] != c_file["Winner"][0][0]){return "line-through"}})
         .text(file["Winner"][0][1])
 
       var logo_width = 320,
