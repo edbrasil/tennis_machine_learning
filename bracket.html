@@ -66,8 +66,8 @@ h3 {
     .defer(d3.json, loc + "Picks.json")
     .defer(d3.json, loc + "C_picks.json")
 
-    .await(function(error,file, c_file) {
-      console.log(c_file)
+    .await(function(error, file, c_file) {
+     // console.log(c_file)
 
       rounds.forEach( function (d, j) {
         var entry_height = height/d;
