@@ -69,6 +69,7 @@ h3 {
     .await(function(error, file, c_file) {
      // console.log(c_file)
 
+
       rounds.forEach( function (d, j) {
         var entry_height = height/d;
         if (j > 0) {
@@ -89,15 +90,27 @@ h3 {
               else if (j==6) {if (file["Final"][i][0] == c_file["Final"][i]) {return "green"} else {return "red"}}
               else {return "black"}
                               }
+          function correct_new(j,i, next_elem){
+
+              if (j==1) {if (next_elem.innerHTML == c_file["Round 2"][i]) {return "green"} else {return "red"}}
+              else if (j==2) {if (next_elem.innerHTML == c_file["Round 3"][i]) {return "green"} else {return "red"}}
+              else if (j==3) {if (next_elem.innerHTML == c_file["Round 4"][i]) {return "green"} else {return "red"}}
+              else if (j==4) {if (next_elem.innerHTML == c_file["Quarterfinal"][i]) {return "green"} else {return "red"}}
+              else if (j==5) {if (next_elem.innerHTML == c_file["Semifinal"][i]) {return "green"} else {return "red"}}
+              else if (j==6) {if (next_elem.innerHTML == c_file["Final"][i]) {return "green"} else {return "red"}}
+              else {return "black"}              
+                              }
           var right_pick = correct(j,i)                        
           //console.log(right_pick)
           var x = (entry_width + curve_width)*j;
           var y = (i + 0.5)*entry_height+top_buffer;
           svg.append("path").attr("id","lpath" + j + "_" + i).attr("d", "M" + x + " " + y + " l " + entry_width + " 0").attr("stroke", "black").attr("stroke-width", 3);
           svg.append("text")
+            .attr("id","lfill" + j + "_" + i)
             .attr("fill", right_pick)
             .attr("dy",function(d){if (j == 0){return "-2"} else {return "-5"}})
             .append("textPath")
+            .attr("id","ltext" + j + "_" + i)
             .attr("xlink:href","#lpath" + j + "_" + i)
             .attr("startOffset","10%")
             .attr("text-decoration",function(d){if (right_pick == "red"){return "line-through"}})
@@ -112,7 +125,56 @@ h3 {
                                else if (j==5) {return file["Semifinal"][i][0]}
                                else if (j==6) {return file["Final"][i][0]}
                                else {return "J Fowler"}})
+            .on("click", ClickFct)
             ;
+
+            function ClickFct(d){
+              j_click = Number(this.id.substring(5,6));
+              i_click = Number(this.id.substring(7));
+              //console.log("j:" + j_click + "i:" + i_click);
+              if (j_click != 6) {
+              var next_j = j_click + 1,
+                  next_i = (i_click - (i_click % 2))/2;
+                  next_elem = document.getElementById("ltext" + next_j + "_" + next_i);
+                  old_elem = next_elem.innerHTML;
+                  //console.log(old_elem)
+                  next_elem.innerHTML = this.innerHTML;
+              var right_pick = correct_new(next_j, next_i, next_elem);
+              d3.select("#lfill"+ next_j + "_" + next_i)
+                .attr("fill",right_pick);
+              d3.select("#ltext" + next_j + "_" + next_i)
+                .attr("text-decoration",function(d){if (right_pick == "red"){return "line-through"}
+                                    else {return "none"} });
+              
+              for (j = next_j + 1; j <= 6; j++){
+                next_i = (next_i - (next_i % 2))/2;
+                //console.log("j:" + j + " i:" + next_i)
+                j_next_elem = document.getElementById("ltext" + j + "_" + next_i)
+                //console.log(j_next_elem)
+                if (j_next_elem.innerHTML == old_elem){
+                    d3.select("#ltext" + j + "_" + next_i)
+                      .text("")
+                      .attr("text-decoration","none")
+                  }
+              }
+
+              if (document.getElementById("win_text").innerHTML == old_elem){
+                d3.select("#win_text")
+                   .text("")
+                   .attr("text-decoration","none")
+              }
+
+              }
+              else {
+               next_elem = document.getElementById("win_text");
+               next_elem.innerHTML = this.innerHTML;
+               d3.select("#win_text")
+                 .attr("fill",function(d){if (next_elem.innerHTML == c_file["Winner"][0][0]){return "green"} else {return "red"}})
+                 .attr("text-decoration",function(d){if (next_elem.innerHTML != c_file["Winner"][0][0]){return "line-through"}
+                                                     else {return "none"}})
+            }
+
+          }
         }
       });
 
@@ -138,16 +200,28 @@ h3 {
               else if (j==6) {if (file["Final"][i+1][0] == c_file["Final"][i+1]) {return "green"} else {return "red"}}
               else {return "black"}
                               }
+          function correct_new(j,i, next_elem){
+
+              if (j==1) {if (next_elem.innerHTML == c_file["Round 2"][i+32]) {return "green"} else {return "red"}}
+              else if (j==2) {if (next_elem.innerHTML == c_file["Round 3"][i+16]) {return "green"} else {return "red"}}
+              else if (j==3) {if (next_elem.innerHTML == c_file["Round 4"][i+8]) {return "green"} else {return "red"}}
+              else if (j==4) {if (next_elem.innerHTML == c_file["Quarterfinal"][i+4]) {return "green"} else {return "red"}}
+              else if (j==5) {if (next_elem.innerHTML == c_file["Semifinal"][i+2]) {return "green"} else {return "red"}}
+              else if (j==6) {if (next_elem.innerHTML == c_file["Final"][i+1]) {return "green"} else {return "red"}}
+              else {return "black"}              
+                              }              
           var right_pick = correct(j,i)  
           var x = (entry_width + curve_width)*j;
           var entry_pos = 2*x + entry_width;
           var y = (i + 0.5)*entry_height+top_buffer;
           right.append("path").attr("id","rpath" + j + "_" + i).attr("d", "M" + x + " " + y + " l " + entry_width + " 0").attr("stroke", "black").attr("stroke-width", 3);
           right.append("text")
+            .attr("id","rfill" + j + "_" + i)
             .attr("fill", right_pick)
             .attr("transform","translate(" + entry_pos +",0) scale(-1,1)")
             .attr("dy",function(d){if (j == 0){return "-2"} else {return "-5"}})
             .append("textPath")
+            .attr("id","rtext" + j + "_" + i)
             .attr("xlink:href","#rpath" + j + "_" + i)
             .attr("startOffset","10%")
             .attr("text-decoration",function(d){if (right_pick == "red"){return "line-through"}})
@@ -161,7 +235,54 @@ h3 {
                                else if (j==4) {return file["Quarterfinal"][i+4][0]}
                                else if (j==5) {return file["Semifinal"][i+2][0]}
                                else if (j==6) {return file["Final"][i+1][0]}
-                               else {return "L Umberger"}});
+                               else {return "L Umberger"}})
+            .on("click", ClickFct)
+            ;
+
+            function ClickFct(d){
+              j_click = Number(this.id.substring(5,6));
+              i_click = Number(this.id.substring(7));
+              //console.log("j:" + j_click + " i:" + i_click);
+              if (j_click != 6) {
+              var next_j = j_click + 1,
+                  next_i = (i_click - (i_click % 2))/2,
+                  next_elem = document.getElementById("rtext" + next_j + "_" + next_i);
+                  old_elem = next_elem.innerHTML;
+              next_elem.innerHTML = this.innerHTML;
+              var right_pick = correct_new(next_j, next_i, next_elem);
+              d3.select("#rfill"+ next_j + "_" + next_i)
+                .attr("fill",right_pick);
+              d3.select("#rtext" + next_j + "_" + next_i)
+                .attr("text-decoration",function(d){if (right_pick == "red"){return "line-through"}
+                                    else {return "none"} });
+
+              for (j = next_j + 1; j <= 6; j++){
+                next_i = (next_i - (next_i % 2))/2;
+                //console.log("j:" + j + " i:" + next_i)
+                j_next_elem = document.getElementById("rtext" + j + "_" + next_i)
+                //console.log(j_next_elem)
+                if (j_next_elem.innerHTML == old_elem){
+                    d3.select("#rtext" + j + "_" + next_i)
+                      .text("")
+                      .attr("text-decoration","none")
+                  }
+              }
+
+              if (document.getElementById("win_text").innerHTML == old_elem){
+                d3.select("#win_text")
+                   .text("")
+                   .attr("text-decoration","none")
+              }
+              }
+              else {
+               next_elem = document.getElementById("win_text");
+               next_elem.innerHTML = this.innerHTML;
+               d3.select("#win_text")
+                 .attr("fill",function(d){if (next_elem.innerHTML == c_file["Winner"][0][0]){return "green"} else {return "red"}})
+                 .attr("text-decoration",function(d){if (next_elem.innerHTML != c_file["Winner"][0][0]){return "line-through"}
+                                                     else {return "none"}})
+              }
+            }
         }
       });
 
@@ -183,12 +304,13 @@ h3 {
         .text("Winner:")
 
       var winnerFinal = winner.append("text")
+        .attr("id","win_text")
         .attr("x",width/2-((entry_width*1.5)/2)+entry_width*0.34)
         .attr("y",height*(0.1 + 0.035))
         .attr("class","winnp")
         .attr("fill",function(d){if (file["Winner"][0][0] == c_file["Winner"][0][0]){return "green"} else {return "red"}})
         .attr("text-decoration",function(d){if (file["Winner"][0][0] != c_file["Winner"][0][0]){return "line-through"}})
-        .text(file["Winner"][0][1])
+        .text(file["Winner"][0][0])
 
       var logo_width = 320,
           logo_height = 180;
