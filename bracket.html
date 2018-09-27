@@ -68,7 +68,15 @@ h3 {
 
     .await(function(error, file, c_file) {
      // console.log(c_file)
-
+     function getRound(j, use_file) {
+        if (j==0) {return use_file["Round 1"]}
+        else if (j==1) {return use_file["Round 2"]}
+        else if (j==2) {return use_file["Round 3"]}
+        else if (j==3) {return use_file["Round 4"]}
+        else if (j==4) {return use_file["Quarterfinal"]}
+        else if (j==5) {return use_file["Semifinal"]}
+        else if (j==6) {return use_file["Final"]}
+      }
 
       rounds.forEach( function (d, j) {
         var entry_height = height/d;
@@ -82,26 +90,20 @@ h3 {
         }
         for (i = 0; i < d; i++){
           function correct(j,i){
-              if (j==1) {if (file["Round 2"][i][0] == c_file["Round 2"][i]) {return "green"} else {return "red"}}
-              else if (j==2) {if (file["Round 3"][i][0] == c_file["Round 3"][i]) {return "green"} else {return "red"}}
-              else if (j==3) {if (file["Round 4"][i][0] == c_file["Round 4"][i]) {return "green"} else {return "red"}}
-              else if (j==4) {if (file["Quarterfinal"][i][0] == c_file["Quarterfinal"][i]) {return "green"} else {return "red"}}
-              else if (j==5) {if (file["Semifinal"][i][0] == c_file["Semifinal"][i]) {return "green"} else {return "red"}}
-              else if (j==6) {if (file["Final"][i][0] == c_file["Final"][i]) {return "green"} else {return "red"}}
+              if (j != 0){
+                if (getRound(j,file)[i][0] == getRound(j,c_file)[i][0]){return "green"} else {return "red"}
+                }
               else {return "black"}
-                              }
-          function correct_new(j,i, next_elem){
+           }
 
-              if (j==1) {if (next_elem.innerHTML == c_file["Round 2"][i]) {return "green"} else {return "red"}}
-              else if (j==2) {if (next_elem.innerHTML == c_file["Round 3"][i]) {return "green"} else {return "red"}}
-              else if (j==3) {if (next_elem.innerHTML == c_file["Round 4"][i]) {return "green"} else {return "red"}}
-              else if (j==4) {if (next_elem.innerHTML == c_file["Quarterfinal"][i]) {return "green"} else {return "red"}}
-              else if (j==5) {if (next_elem.innerHTML == c_file["Semifinal"][i]) {return "green"} else {return "red"}}
-              else if (j==6) {if (next_elem.innerHTML == c_file["Final"][i]) {return "green"} else {return "red"}}
-              else {return "black"}              
-                              }
+          function correct_new(j,i, next_elem){
+              if (j != 0){
+                if (next_elem.innerHTML == getRound(j,c_file)[i][0]){return "green"} else {return "red"}
+                }
+              else {return "black"}
+            }
           var right_pick = correct(j,i)                        
-          //console.log(right_pick)
+
           var x = (entry_width + curve_width)*j;
           var y = (i + 0.5)*entry_height+top_buffer;
           svg.append("path").attr("id","lpath" + j + "_" + i).attr("d", "M" + x + " " + y + " l " + entry_width + " 0").attr("stroke", "black").attr("stroke-width", 3);
@@ -117,27 +119,20 @@ h3 {
             .attr("class",function (d) {if (j == 0) {return "size1"} 
                                         else if (j == 1) {return "size2"}
                                         else {return "size3"}})
-            .text(function(d) {if (j==0) {return file["Round 1"][i][0]}
-                               else if (j==1) {return file["Round 2"][i][0]}
-                               else if (j==2) {return file["Round 3"][i][0]}
-                               else if (j==3) {return file["Round 4"][i][0]}
-                               else if (j==4) {return file["Quarterfinal"][i][0]}
-                               else if (j==5) {return file["Semifinal"][i][0]}
-                               else if (j==6) {return file["Final"][i][0]}
-                               else {return "J Fowler"}})
+            .text(getRound(j,file)[i][0])
             .on("click", ClickFct)
+            .on("mouseover",function(d) { d3.select(this).style("cursor","pointer");})
+            .on("mouseout",function(d) {d3.select(this).style("cursor","default");})
             ;
 
             function ClickFct(d){
               j_click = Number(this.id.substring(5,6));
               i_click = Number(this.id.substring(7));
-              //console.log("j:" + j_click + "i:" + i_click);
               if (j_click != 6) {
               var next_j = j_click + 1,
                   next_i = (i_click - (i_click % 2))/2;
                   next_elem = document.getElementById("ltext" + next_j + "_" + next_i);
                   old_elem = next_elem.innerHTML;
-                  //console.log(old_elem)
                   next_elem.innerHTML = this.innerHTML;
               var right_pick = correct_new(next_j, next_i, next_elem);
               d3.select("#lfill"+ next_j + "_" + next_i)
@@ -148,9 +143,7 @@ h3 {
               
               for (j = next_j + 1; j <= 6; j++){
                 next_i = (next_i - (next_i % 2))/2;
-                //console.log("j:" + j + " i:" + next_i)
                 j_next_elem = document.getElementById("ltext" + j + "_" + next_i)
-                //console.log(j_next_elem)
                 if (j_next_elem.innerHTML == old_elem){
                     d3.select("#ltext" + j + "_" + next_i)
                       .text("")
@@ -192,24 +185,17 @@ h3 {
         }
         for (i = 0; i < d; i++){
             function correct(j,i){
-              if (j==1) {if (file["Round 2"][i+32][0] == c_file["Round 2"][i+32]) {return "green"} else {return "red"}}
-              else if (j==2) {if (file["Round 3"][i+16][0] == c_file["Round 3"][i+16]) {return "green"} else {return "red"}}
-              else if (j==3) {if (file["Round 4"][i+8][0] == c_file["Round 4"][i+8]) {return "green"} else {return "red"}}
-              else if (j==4) {if (file["Quarterfinal"][i+4][0] == c_file["Quarterfinal"][i+4]) {return "green"} else {return "red"}}
-              else if (j==5) {if (file["Semifinal"][i+2][0] == c_file["Semifinal"][i+2]) {return "green"} else {return "red"}}
-              else if (j==6) {if (file["Final"][i+1][0] == c_file["Final"][i+1]) {return "green"} else {return "red"}}
+              if (j != 0){
+                if (getRound(j,file) [i + 2 **(6-j)][0] == getRound(j,c_file) [i + 2 **(6-j)][0]) {return "green"} else {return "red"}
+              }
               else {return "black"}
-                              }
+            }
           function correct_new(j,i, next_elem){
-
-              if (j==1) {if (next_elem.innerHTML == c_file["Round 2"][i+32]) {return "green"} else {return "red"}}
-              else if (j==2) {if (next_elem.innerHTML == c_file["Round 3"][i+16]) {return "green"} else {return "red"}}
-              else if (j==3) {if (next_elem.innerHTML == c_file["Round 4"][i+8]) {return "green"} else {return "red"}}
-              else if (j==4) {if (next_elem.innerHTML == c_file["Quarterfinal"][i+4]) {return "green"} else {return "red"}}
-              else if (j==5) {if (next_elem.innerHTML == c_file["Semifinal"][i+2]) {return "green"} else {return "red"}}
-              else if (j==6) {if (next_elem.innerHTML == c_file["Final"][i+1]) {return "green"} else {return "red"}}
-              else {return "black"}              
-                              }              
+              if (j != 0){
+                if (next_elem.innerHTML == getRound(j,c_file) [i + 2 **(6-j)][0]) {return "green"} else {return "red"}
+              }
+              else {return "black"}
+            }              
           var right_pick = correct(j,i)  
           var x = (entry_width + curve_width)*j;
           var entry_pos = 2*x + entry_width;
@@ -228,27 +214,23 @@ h3 {
             .attr("class",function (d) {if (j == 0) {return "size1"} 
                                         else if (j == 1) {return "size2"}
                                         else {return "size3"}})
-            .text(function(d) {if (j==0) {return file["Round 1"][i+64][0]}
-                               else if (j==1) {return file["Round 2"][i+32][0]}
-                               else if (j==2) {return file["Round 3"][i+16][0]}
-                               else if (j==3) {return file["Round 4"][i+8][0]}
-                               else if (j==4) {return file["Quarterfinal"][i+4][0]}
-                               else if (j==5) {return file["Semifinal"][i+2][0]}
-                               else if (j==6) {return file["Final"][i+1][0]}
-                               else {return "L Umberger"}})
+            .text(getRound(j,file)[i + 2 **(6-j)][0])
             .on("click", ClickFct)
+            .on("mouseover",function(d) { d3.select(this).style("cursor","pointer");})
+            .on("mouseout",function(d) {d3.select(this).style("cursor","default");})
             ;
 
             function ClickFct(d){
               j_click = Number(this.id.substring(5,6));
               i_click = Number(this.id.substring(7));
-              //console.log("j:" + j_click + " i:" + i_click);
+
               if (j_click != 6) {
               var next_j = j_click + 1,
                   next_i = (i_click - (i_click % 2))/2,
                   next_elem = document.getElementById("rtext" + next_j + "_" + next_i);
                   old_elem = next_elem.innerHTML;
               next_elem.innerHTML = this.innerHTML;
+
               var right_pick = correct_new(next_j, next_i, next_elem);
               d3.select("#rfill"+ next_j + "_" + next_i)
                 .attr("fill",right_pick);
@@ -258,9 +240,9 @@ h3 {
 
               for (j = next_j + 1; j <= 6; j++){
                 next_i = (next_i - (next_i % 2))/2;
-                //console.log("j:" + j + " i:" + next_i)
+
                 j_next_elem = document.getElementById("rtext" + j + "_" + next_i)
-                //console.log(j_next_elem)
+
                 if (j_next_elem.innerHTML == old_elem){
                     d3.select("#rtext" + j + "_" + next_i)
                       .text("")
