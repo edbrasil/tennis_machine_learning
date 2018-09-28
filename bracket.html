@@ -90,14 +90,14 @@ h3 {
         }
         for (i = 0; i < d; i++){
           function correct(j,i){
-              if (j != 0){
+              if ((j != 0) && (getRound(j,c_file)[i][0] != "")){
                 if (getRound(j,file)[i][0] == getRound(j,c_file)[i][0]){return "green"} else {return "red"}
                 }
               else {return "black"}
            }
 
           function correct_new(j,i, next_elem){
-              if (j != 0){
+              if ((j != 0) && (getRound(j,c_file)[i][0] != "")){
                 if (next_elem.innerHTML == getRound(j,c_file)[i][0]){return "green"} else {return "red"}
                 }
               else {return "black"}
@@ -126,14 +126,25 @@ h3 {
             ;
 
             function ClickFct(d){
+              //Get i and j from this element
               j_click = Number(this.id.substring(5,6));
               i_click = Number(this.id.substring(7));
+
+              //Handle the winner separate
               if (j_click != 6) {
+
+              //Find next element's i and j
               var next_j = j_click + 1,
                   next_i = (i_click - (i_click % 2))/2;
                   next_elem = document.getElementById("ltext" + next_j + "_" + next_i);
+
+                  //Keep old element's value to determine which lines to clear
                   old_elem = next_elem.innerHTML;
                   next_elem.innerHTML = this.innerHTML;
+                  getRound(next_j,file)[next_i][0] = this.innerHTML;
+                  getRound(next_j,file)[next_i][1] = "";
+
+              //Determine if the pick is correct and set properties
               var right_pick = correct_new(next_j, next_i, next_elem);
               d3.select("#lfill"+ next_j + "_" + next_i)
                 .attr("fill",right_pick);
@@ -141,32 +152,40 @@ h3 {
                 .attr("text-decoration",function(d){if (right_pick == "red"){return "line-through"}
                                     else {return "none"} });
               
+              //Loop over latter rounds to see if any need to be cleared out
               for (j = next_j + 1; j <= 6; j++){
                 next_i = (next_i - (next_i % 2))/2;
                 j_next_elem = document.getElementById("ltext" + j + "_" + next_i)
                 if (j_next_elem.innerHTML == old_elem){
+                    getRound(j,file)[next_i][0] = "";
+                    getRound(j,file)[next_i][1] = "";
                     d3.select("#ltext" + j + "_" + next_i)
                       .text("")
                       .attr("text-decoration","none")
                   }
               }
 
+              //Clear winner if needed
               if (document.getElementById("win_text").innerHTML == old_elem){
+                file["Winner"][0][0] = "";
+                file["Winner"][0][1] = "";
                 d3.select("#win_text")
                    .text("")
                    .attr("text-decoration","none")
               }
 
               }
+              //Check winner
               else {
                next_elem = document.getElementById("win_text");
                next_elem.innerHTML = this.innerHTML;
+               file["Winner"][0][0] = this.innerHTML;
                d3.select("#win_text")
                  .attr("fill",function(d){if (next_elem.innerHTML == c_file["Winner"][0][0]){return "green"} else {return "red"}})
                  .attr("text-decoration",function(d){if (next_elem.innerHTML != c_file["Winner"][0][0]){return "line-through"}
                                                      else {return "none"}})
             }
-
+            //console.log(file)
           }
         }
       });
@@ -185,13 +204,13 @@ h3 {
         }
         for (i = 0; i < d; i++){
             function correct(j,i){
-              if (j != 0){
+              if ((j != 0) && (getRound(j,c_file)[i + 2 **(6-j)][0] != "")){
                 if (getRound(j,file) [i + 2 **(6-j)][0] == getRound(j,c_file) [i + 2 **(6-j)][0]) {return "green"} else {return "red"}
               }
               else {return "black"}
             }
           function correct_new(j,i, next_elem){
-              if (j != 0){
+              if ((j != 0) && (getRound(j,c_file)[i + 2 **(6-j)][0] != "")){
                 if (next_elem.innerHTML == getRound(j,c_file) [i + 2 **(6-j)][0]) {return "green"} else {return "red"}
               }
               else {return "black"}
@@ -221,16 +240,24 @@ h3 {
             ;
 
             function ClickFct(d){
+              //Get this node's i and j
               j_click = Number(this.id.substring(5,6));
               i_click = Number(this.id.substring(7));
 
+              //Only handle rounds up to the final, winner handled later
               if (j_click != 6) {
-              var next_j = j_click + 1,
+
+              //Get next element
+               var next_j = j_click + 1,
                   next_i = (i_click - (i_click % 2))/2,
                   next_elem = document.getElementById("rtext" + next_j + "_" + next_i);
                   old_elem = next_elem.innerHTML;
-              next_elem.innerHTML = this.innerHTML;
+               
+               next_elem.innerHTML = this.innerHTML;
+               getRound(next_j,file)[next_i+ 2 **(6-next_j)][0] = this.innerHTML;
+               getRound(next_j,file)[next_i+ 2 **(6-next_j)][1] = "";
 
+              //Determine if pick is correct and set properties
               var right_pick = correct_new(next_j, next_i, next_elem);
               d3.select("#rfill"+ next_j + "_" + next_i)
                 .attr("fill",right_pick);
@@ -238,12 +265,15 @@ h3 {
                 .attr("text-decoration",function(d){if (right_pick == "red"){return "line-through"}
                                     else {return "none"} });
 
+              //Loop through latter rounds to see if any need to be cleared out
               for (j = next_j + 1; j <= 6; j++){
                 next_i = (next_i - (next_i % 2))/2;
 
                 j_next_elem = document.getElementById("rtext" + j + "_" + next_i)
 
                 if (j_next_elem.innerHTML == old_elem){
+                    getRound(j,file)[next_i+ 2 **(6-j)][0] = "";
+                    getRound(j,file)[next_i+ 2 **(6-j)][1] = "";
                     d3.select("#rtext" + j + "_" + next_i)
                       .text("")
                       .attr("text-decoration","none")
@@ -251,19 +281,25 @@ h3 {
               }
 
               if (document.getElementById("win_text").innerHTML == old_elem){
+                file["Winner"][0][0] = "";
+                file["Winner"][0][1] = "";
                 d3.select("#win_text")
                    .text("")
                    .attr("text-decoration","none")
               }
               }
+              //Check winner
               else {
                next_elem = document.getElementById("win_text");
                next_elem.innerHTML = this.innerHTML;
+               file["Winner"][0][0] = this.innerHTML;
+               file["Winner"][0][1] = "";
                d3.select("#win_text")
                  .attr("fill",function(d){if (next_elem.innerHTML == c_file["Winner"][0][0]){return "green"} else {return "red"}})
                  .attr("text-decoration",function(d){if (next_elem.innerHTML != c_file["Winner"][0][0]){return "line-through"}
                                                      else {return "none"}})
               }
+              console.log(JSON.stringify(file))
             }
         }
       });
