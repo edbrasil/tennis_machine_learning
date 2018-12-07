@@ -63,7 +63,7 @@ h3 {
   var loc = "https://raw.githubusercontent.com/edbrasil/aus-open/master/"
 
   d3.queue()
-    .defer(d3.json, loc + "Picks.json")
+    .defer(d3.json, loc + "Picks120718.json")
     .defer(d3.json, loc + "C_picks.json")
 
     .await(function(error, file, c_file) {
