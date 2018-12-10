@@ -22,7 +22,7 @@ Gets a dictionary of players per round from the
 C_picks JSON or provided list of players
 This JSON comes from getCorrect.py
 """
-def getData (filename, all_rounds = False):
+def getData (file_name, all_rounds = False):
     
     def remBracket(rnd, dc):
         lt = []
