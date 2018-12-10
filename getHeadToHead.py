@@ -3,6 +3,9 @@
 Created on Mon Sep 10 16:22:04 2018
 
 @author: edbras
+
+Definition: getH2H function pulls head to head results
+Returns: df with head-to-head
 """
 
 import pandas as pd
