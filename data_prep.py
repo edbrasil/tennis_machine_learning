@@ -7,12 +7,14 @@ Created on Fri Nov 30 15:34:52 2018
 
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.externals import joblib
 
 """
 Import data
 Returns: X and y for modeling
 """
-def data_prep_func(df, X_list=None):
+def data_prep_func(df, X_list=False, full_data = True, drop_extra=False):
    
     """
     Fill missing values
@@ -55,8 +57,12 @@ def data_prep_func(df, X_list=None):
     """
     Drop irrelevant/redundant columns
     """
-    df1.drop(['P Full_0','P Full_1','Player Win_1','Round_1', 'Tournament_1',\
-              'Court_1'], axis=1, inplace=True )
+    drop_cols = ['P Full_0','P Full_1','Player Win_1','Round_1', 'Tournament_1',\
+              'Court_1']
+    if drop_extra:
+        drop_cols.extend(('Round_0','Tournament_0','Court_0'))
+    
+    df1.drop(drop_cols, axis=1, inplace=True )
     
     #Remove win from head-to-head since stats are drawn post-tournament
     if not pd.isnull(df1['Player Win_0'].iloc[0]):
@@ -66,13 +72,20 @@ def data_prep_func(df, X_list=None):
     """
     Dummy variables
     """
-    df1 = pd.get_dummies(df1, columns=['P Fav Surface_0', 'P Fav Surface_1', \
+    dummy_list = ['P Fav Surface_0', 'P Fav Surface_1', \
                                        'P Backhand_0', 'P Backhand_1', \
                                        'P Handed_0', 'P Handed_1', 'Round_0',\
-                                       'Tournament_0','Court_0' ], drop_first = True)
+                                       'Tournament_0','Court_0' ]
+    if drop_extra:
+        dummy_list.remove('Tournament_0')
+        dummy_list.remove('Round_0')
+        dummy_list.remove('Court_0')
+        
+    df1 = pd.get_dummies(df1, columns=dummy_list, drop_first = True)
     
-    if X_list != None:
-        miss_list = np.setdiff1d(X_list, df1.columns.values)
+    if X_list:
+        X_list_val=joblib.load("X_list_neunet.save")
+        miss_list = np.setdiff1d(X_list_val, df1.columns.values)
         for var in miss_list:
             pieces = var.split("_")
             if df[pieces[0]][int(pieces[1])] == pieces[2]:
@@ -85,6 +98,15 @@ def data_prep_func(df, X_list=None):
     """
     y = df1['Player Win_0']
     X = df1.drop(['Player Win_0', 'Player_0', 'Player_1'], axis=1)
+    x_norm = X.values
+    x_list = X.columns.values
+    if full_data:
+        data_transform = MinMaxScaler()
+        X = pd.DataFrame(data_transform.fit_transform(x_norm), columns=x_list)
+        joblib.dump(data_transform, "scaler.save")
+    else:
+        data_transform = joblib.load("scaler.save")
+        X = pd.DataFrame(data_transform.transform(x_norm),columns=x_list)
     #print(X)
     
     return X, y

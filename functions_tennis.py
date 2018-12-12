@@ -11,6 +11,7 @@ import pandas as pd
 from logistic_regression import LogRegTennis
 from getData_Full import wrapper
 from data_prep import data_prep_func
+from keras.models import load_model
 
 """
 Used by currentRank to determine if field is 
@@ -80,9 +81,24 @@ def logRegRank(p_dict, needTrain=False):
     #y_pred predicts whether player 0 wins (1) or not (0)
     #therefore return (1- y_pred ) to decide which player wins
     return (1 - y_pred[0])
+
+def NeuNetRank(p_dict):
+    model = load_model('model_50_2.h5')
+    wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
+            tourn = 'US', court = 'H', rd = list(p_dict.keys())[0],all_rounds = False) 
+
+    df_t = pd.read_excel('_temp.xls', header = 0, index_col = 0)
+
+    #global X_test
+    X_test, y_test = data_prep_func(df_t, X_list=True, full_data=False, drop_extra=True)
+
+    y_pred = model.predict(X_test)
+    #print(y_pred)
+    #print(np.rint(y_pred))
+    return int(round(y_pred.item(0)))
     
-p_dict = {'r1': ['C Altamirano', 'U Humbert']}
-logRegRank(p_dict, needTrain=False)
+#p_dict = {'r1': ['C Altamirano', 'U Humbert']}
+#logRegRank(p_dict, needTrain=False)
 #    
 
 

@@ -15,12 +15,15 @@ from selenium import webdriver
 import json
 
 url_use = "https://en.wikipedia.org/wiki/2018_US_Open_%E2%80%93_Men%27s_Singles#Draw"
-out_file = "R1_U2018.json"
-all_rounds = False
+out_file = "C_picks_U2018.json"
+all_rounds = True
 col_list = [2, 11, 12, 13, 2, 3, 4]
 t_start = [4, 4, 4, 4, 3, 3, 3 ]
-t_end = [12, 12, 12, 12, 13, 13, 13]
+t_end = [12, 12, 12, 12, 4, 4, 4]
 
+#col_list = [2, 3, 4]
+#t_start = [3, 3, 3]
+#t_end = [4, 4, 4]
 """
 getBracket returns a DataFrame with players for
 a given round
@@ -47,14 +50,14 @@ def getBracket (new_bracket = True, column = 11,
         df = pd.DataFrame()   
         
         for i in range(t_start, t_end):
-            #print(i)
             soup_i = soup[i]
             df1, = pd.read_html(str(soup_i))
+            
             #print(df1)
             if column == 12 or column == 13:
                 df1.iloc[8,13] = df1.iloc[8,12]
                 df1.iloc[8,12] = ""
-            
+#            
             if t_start == 3:
                 df1.iloc[13,3] = df1.iloc[13,4]
                 df1.iloc[13,4] = ""
@@ -71,18 +74,19 @@ def getBracket (new_bracket = True, column = 11,
 #                wait = input("Waiting:")
 #                if wait == "Y":
 #                    continue
-#               
-#                df1 = pd.read_excel("temp.xls", sheet_name="Sheet1", header=0)
+               
+                #df1 = pd.read_excel("temp.xls", sheet_name="Sheet1", header=0)
+
             df1 = df1.iloc[1:,column]
 
             df1.dropna(inplace=True)
             #print (~df1.str.contains(r'[0-9]'))
             df1 = df1.loc[~df1.str.contains(r'[0-9]')]
-            df1 = df1[df1 !=""]
-            df1 = df1[df1 != "WC"]
-            df1 = df1[df1 != "LL"]
-            df1 = df1[df1 != "Q"]
-            df1 = df1[df1 != "PR"]
+            df1 = df1[~df1.isin(["","WC","LL","Q","PR","w/o"])]
+#            df1 = df1[df1 != "WC"]
+#            df1 = df1[df1 != "LL"]
+#            df1 = df1[df1 != "Q"]
+#            df1 = df1[df1 != "PR"]
             #print(df1)
 
             df = pd.concat([df,df1])
