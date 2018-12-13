@@ -19,7 +19,7 @@ from keras.layers import Dropout
 from keras.models import Sequential
 from keras.utils import to_categorical
 from keras.callbacks import EarlyStopping
-from keras.models import load_model
+#from keras.models import load_model
 import pandas as pd
 from sklearn.externals import joblib
 import matplotlib.pyplot as plt
@@ -65,24 +65,24 @@ plt.xlabel('Epochs')
 plt.ylabel('Validation score')
 plt.show()
 
+#Save model
 model.save('model_50_2.h5')
-#    return logreg_cv, X_list
 
 #prediction test
-from getData_Full import wrapper
-model = load_model('model_10_1.h5')
-p_dict = {'r4': ['N Djokovic','JM del Potro']}
-wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
-    tourn = 'US', court = 'H', rd = 'r4',all_rounds = False) 
-
-df_t = pd.read_excel('_temp.xls', header = 0, index_col = 0)
-
-#global X_test
-X_test, y_test = data_prep_func(df_t, X_list, full_data=False, drop_extra=True)
-
-y_pred = model.predict(X_test)
-print(y_pred)
-print(np.rint(y_pred))
+#from getData_Full import wrapper
+#model = load_model('model_10_1.h5')
+#p_dict = {'r4': ['N Djokovic','JM del Potro']}
+#wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
+#    tourn = 'US', court = 'H', rd = 'r4',all_rounds = False) 
+#
+#df_t = pd.read_excel('_temp.xls', header = 0, index_col = 0)
+#
+##global X_test
+#X_test, y_test = data_prep_func(df_t, X_list, full_data=False, drop_extra=True)
+#
+#y_pred = model.predict(X_test)
+#print(y_pred)
+#print(np.rint(y_pred))
 #y_pred predicts whether player 0 wins (1) or not (0)
 #therefore return (1- y_pred ) to decide which player wins
 

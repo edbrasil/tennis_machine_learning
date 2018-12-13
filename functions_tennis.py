@@ -8,10 +8,11 @@ Created on Mon Sep 17 11:40:54 2018
 Import libraries
 """
 import pandas as pd
-from logistic_regression import LogRegTennis
+#from logistic_regression import LogRegTennis
 from getData_Full import wrapper
 from data_prep import data_prep_func
 from keras.models import load_model
+from sklearn.externals import joblib
 
 """
 Used by currentRank to determine if field is 
@@ -49,33 +50,16 @@ def currentRank(rank, current_rank):
     else:
         current_rank.append(int(rank.split(" ",1)[0]))
 
-def logRegRank(p_dict, needTrain=False):
-    #Only run logistic regression the first round
-    global X_list
-    try:
-        X_list
-    except NameError:
-        #Training tournaments
-        
-        tourn_list = ['U2017','A2018','F2018','W2018']
-        df_list = []
-        
-        for f in tourn_list:
-            df_list.append(pd.read_excel('data_'+f+'.xls', header = 0, index_col = 0))
-        
-        df = pd.concat(df_list, ignore_index = True)
-        
-        global logreg_cv
-        #global X_list
-        logreg_cv, X_list = LogRegTennis(df)
-        
+def logRegRank(p_dict):
+    logreg_cv = joblib.load('logreg.h5')    
     wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
-        tourn = 'US', court = 'H', all_rounds = False) 
+        tourn = 'US', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
     
     df_t = pd.read_excel('_temp.xls', header = 0, index_col = 0)
     
     #global X_test
-    X_test, y_test = data_prep_func(df_t, X_list)
+    X_test, y_test = data_prep_func(df_t, X_list="X_list_logreg.save", full_data=False
+                                    , drop_extra=False, modtype='logreg')
     
     y_pred = logreg_cv.predict(X_test)
     #y_pred predicts whether player 0 wins (1) or not (0)
@@ -85,12 +69,12 @@ def logRegRank(p_dict, needTrain=False):
 def NeuNetRank(p_dict):
     model = load_model('model_50_2.h5')
     wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
-            tourn = 'US', court = 'H', rd = list(p_dict.keys())[0],all_rounds = False) 
+            tourn = 'US', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
 
     df_t = pd.read_excel('_temp.xls', header = 0, index_col = 0)
 
     #global X_test
-    X_test, y_test = data_prep_func(df_t, X_list=True, full_data=False, drop_extra=True)
+    X_test, y_test = data_prep_func(df_t, X_list="X_list_neunet.save", full_data=False, drop_extra=True)
 
     y_pred = model.predict(X_test)
     #print(y_pred)

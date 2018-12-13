@@ -35,8 +35,20 @@ df_in[0 plays 1, etc]
 json_file = open('C_picks_U2018.json')
 json_str = json_file.read()
 json_data = json.loads(json_str)
-df_r1 = pd.DataFrame(json_data['Round 1'])
+df_r1 = pd.DataFrame(json_data['Round 1'], columns = ["Name"])
 
+df_r1["Full Name"]=""   
+df_lu = pd.read_excel("./Excel Files/bracket.xls"
+                      ,sheet_name="Sheet1"
+                      ,header=0)    
+
+for i in range(128):
+    #Player Names
+    player_1 = df_r1["Name"][i]
+    try:
+        df_r1["Full Name"][i] = df_lu["Full Name"].loc[df_lu.loc[df_lu["Name"] == player_1].index].item()
+    except ValueError:
+        print("Value Error: " + player_1)
 #print (df_r1)
 
 """
@@ -70,13 +82,13 @@ def nextRound(df_r, r_num, type = 'logreg'):
                 #print(df_h2h.loc["vs"][2])
                 r2.append([df_r.iloc[i+1]["Name"],df_r.iloc[i+1]["Full Name"]])
         elif type == 'logreg':
-            p_dict = {'r1' :[df_r.iloc[i]["Name"],
+            p_dict = {'r' + r_num :[df_r.iloc[i]["Name"],
                            df_r.iloc[i+1]["Name"]]}
-            winner = logRegRank(p_dict, needTrain=False)
+            winner = logRegRank(p_dict)
             print(df_r.iloc[i+winner]["Name"])
             r2.append([df_r.iloc[i+winner]["Name"],df_r.iloc[i+winner]["Full Name"]])
         elif type == 'neunet':
-            p_dict = {'r' +r_num :[df_r.iloc[i]["Name"],
+            p_dict = {'r' + r_num :[df_r.iloc[i]["Name"],
                            df_r.iloc[i+1]["Name"]]}
             winner = NeuNetRank(p_dict)
             print(df_r.iloc[i+winner]["Name"])
@@ -94,7 +106,7 @@ Calls nextRound
 """
 
 def loopRounds(in_df, r_name, r_num):
-    out_df = nextRound(in_df, r_num, type='neunet')
+    out_df = nextRound(in_df, r_num, type='logreg')
     print(r_name + ":")
     print(out_df)
     #out_df.to_json(r_name.replace(" ","") + ".json",orient="values")
@@ -103,7 +115,7 @@ def loopRounds(in_df, r_name, r_num):
 """
 Get Rounds
 """
-df_r1.to_json("Round1.json",orient="values")
+#df_r1.to_json("Round1.json",orient="values")
 df_r2 = loopRounds(df_r1, "Round 2", "2")
 df_r3 = loopRounds(df_r2, "Round 3", "3")
 df_r4 = loopRounds(df_r3, "Round 4", "4")
@@ -116,7 +128,7 @@ df_w = loopRounds(df_f, "Winner", "8")
 Add rounds to Dict and export to 'Picks.json'
 """
 
-dict = {"Round 1" : df_r1.values.tolist(),
+out_dict = {"Round 1" : df_r1.values.tolist(),
         "Round 2" : df_r2.values.tolist(),
         "Round 3" : df_r3.values.tolist(),
         "Round 4" : df_r4.values.tolist(),
@@ -125,5 +137,5 @@ dict = {"Round 1" : df_r1.values.tolist(),
         "Final" : df_f.values.tolist(),
         "Winner" : df_w.values.tolist()}
 
-with open('Picks_neunet.json', 'w') as fp:
-    json.dump(dict, fp)
+with open('Picks_logreg2.json', 'w') as fp:
+    json.dump(out_dict, fp)

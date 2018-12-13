@@ -14,28 +14,30 @@ from sklearn.externals import joblib
 Import data
 Returns: X and y for modeling
 """
-def data_prep_func(df, X_list=False, full_data = True, drop_extra=False):
+def data_prep_func(df, X_list=None, full_data = True, drop_extra=False, modtype="neunet"):
    
     """
     Fill missing values
     """
     df[['P Titles','P Points','P ELO Points']] = df[['P Titles','P Points','P ELO Points']].fillna(0)
     
-    df['P Rank'].fillna(np.max(df['P Rank']) + 10, inplace=True)
-    df['P ELO Rank'].fillna(np.max(df['P ELO Rank']) + 20, inplace=True)
-    df['P ELO Rank'].fillna(1000,inplace=True)
-    df['P Best Rank'].fillna(np.max(df['P Best Rank']) + 20, inplace=True)
+    df['P Rank'].fillna(500, inplace=True)
+    df['P ELO Rank'].fillna(300, inplace=True)
+    #df['P ELO Rank'].fillna(1000,inplace=True)
+    df['P Best Rank'].fillna(1000, inplace=True)
     df['P Handed'].fillna('Right-handed', inplace=True)
     
-    df_bd_mode = df['P Best Date'].mode().iloc[0]
-    df['P Best Date'].fillna(df_bd_mode, inplace=True)
+    #df_bd_mode = df['P Best Date'].mode().iloc[0]
+    #df['P Best Date'].fillna(df_bd_mode, inplace=True)
+    df['P Best Date'].fillna(2018, inplace=True)
 
     df['P Fav Surface'].fillna('None', inplace=True)    
     df['P Fav Surface'] = df['P Fav Surface'].str.split().str.get(0)
     #df['P Fav Surface'].value_counts()
     
-    df_b_mode = df['P Backhand'].mode().iloc[0]
-    df['P Backhand'] = df['P Backhand'].fillna(df_b_mode)
+    #df_b_mode = df['P Backhand'].mode().iloc[0]
+    #df['P Backhand'] = df['P Backhand'].fillna(df_b_mode)
+    df['P Backhand'] = df['P Backhand'].fillna("Two-handed")
     
     """
     For simplicity, extract year from Best Date
@@ -83,8 +85,8 @@ def data_prep_func(df, X_list=False, full_data = True, drop_extra=False):
         
     df1 = pd.get_dummies(df1, columns=dummy_list, drop_first = True)
     
-    if X_list:
-        X_list_val=joblib.load("X_list_neunet.save")
+    if X_list != None:
+        X_list_val=joblib.load(X_list)
         miss_list = np.setdiff1d(X_list_val, df1.columns.values)
         for var in miss_list:
             pieces = var.split("_")
@@ -103,9 +105,9 @@ def data_prep_func(df, X_list=False, full_data = True, drop_extra=False):
     if full_data:
         data_transform = MinMaxScaler()
         X = pd.DataFrame(data_transform.fit_transform(x_norm), columns=x_list)
-        joblib.dump(data_transform, "scaler.save")
+        joblib.dump(data_transform, "scaler_"+modtype+".save")
     else:
-        data_transform = joblib.load("scaler.save")
+        data_transform = joblib.load("scaler_"+modtype+".save")
         X = pd.DataFrame(data_transform.transform(x_norm),columns=x_list)
     #print(X)
     

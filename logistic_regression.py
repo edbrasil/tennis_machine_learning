@@ -5,61 +5,67 @@ Created on Mon Dec  3 13:33:53 2018
 @author: edbras
 """
 """
-Use 4 training tournaments (508 matches) to train
+Use 8 training tournaments (1016 matches) to train
 a logistic regression using a 5-fold CV Grid Search
 """
 
 from data_prep import data_prep_func
 import numpy as np
-#import pandas as pd
+import pandas as pd
 
 
 # Import necessary modules
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
+from sklearn.externals import joblib
 
-def LogRegTennis(df_train):
-    X_train, y_train = data_prep_func(df_train)
-    X_list = list(X_train.columns.values)
-    #Use US Open 2018 as testing
-#    df_U8 = pd.read_excel('data_U2018.xls', header = 0, index_col = 0)
-#    
-#    X_test, y_test = data_prep_func(df_U8)
-#    X_test['Tournament_0_FRE'] = 0
-#    X_test['Tournament_0_US'] = 1
-#    X_test['Tournament_0_WIM'] = 0
-#    X_test['Court_0_G'] = 0
-#    X_test['Court_0_H'] = 1
-    
-    # Setup the hyperparameter grid
-    c_space = np.logspace(-5, 8, 25)
-    param_grid = {'C': c_space, 'penalty': ['l1', 'l2']}
-    
-    # Instantiate a logistic regression classifier: logreg
-    logreg = LogisticRegression()
-    
-    # Instantiate the GridSearchCV object: logreg_cv
-    logreg_cv = GridSearchCV(logreg, param_grid, cv=5)
-    
-    # Fit it to the data
-    logreg_cv.fit(X_train, y_train)
-    
-    # Print the tuned parameters and score
-    print("Tuned Logistic Regression Parameters: {}".format(logreg_cv.best_params_)) 
-    print("Best score is {}".format(logreg_cv.best_score_))
+#Training tournaments
 
-    print(dict(zip(X_list,\
-                   logreg_cv.best_estimator_.coef_.tolist()[0])))
-    
-    return logreg_cv, X_list
+tourn_list = ['U2016', 'A2017','F2017','W2017', 'U2017','A2018','F2018','W2018']
+df_list = []
 
-    """
-    Display confusion matrix, classification report and prediction results
-    """
+for f in tourn_list:
+    df_list.append(pd.read_excel('./Excel Files/data_'+f+'.xls', header = 0, index_col = 0))
+
+df_train = pd.concat(df_list, ignore_index = True)
+
+X_train, y_train = data_prep_func(df_train, modtype="logreg")
+X_list = list(X_train.columns.values)
+joblib.dump(X_list, "X_list_logreg.save")
+
+# Setup the hyperparameter grid
+c_space = np.logspace(-5, 8, 25)
+param_grid = {'C': c_space, 'penalty': ['l1', 'l2']}
+
+# Instantiate a logistic regression classifier: logreg
+logreg = LogisticRegression()
+
+# Instantiate the GridSearchCV object: logreg_cv
+logreg_cv = GridSearchCV(logreg, param_grid, cv=5)
+
+# Fit it to the data
+logreg_cv.fit(X_train, y_train)
+
+# Print the tuned parameters and score
+print("Tuned Logistic Regression Parameters: {}".format(logreg_cv.best_params_)) 
+print("Best score is {}".format(logreg_cv.best_score_))
+
+print(dict(zip(X_list,\
+               logreg_cv.best_estimator_.coef_.tolist()[0])))
+
+joblib.dump(logreg_cv, "logreg_new.h5")
+
+"""
+Display confusion matrix, classification report and prediction results
+"""
     
     # Check on validation
 #    from sklearn.metrics import classification_report, confusion_matrix
-    
+
+#Use US Open 2018 as testing
+#    df_U8 = pd.read_excel('data_U2018.xls', header = 0, index_col = 0)
+#    
+#    X_test, y_test = data_prep_func(df_U8)    
     
 #    y_pred = logreg_cv.predict(X_test)
     
