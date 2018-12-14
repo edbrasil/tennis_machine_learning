@@ -50,8 +50,8 @@ def currentRank(rank, current_rank):
     else:
         current_rank.append(int(rank.split(" ",1)[0]))
 
-def logRegRank(p_dict):
-    logreg_cv = joblib.load('logreg.h5')    
+def ModelRank(p_dict, model_file):
+    logreg_cv = joblib.load(model_file)    
     wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
         tourn = 'US', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
     
@@ -65,6 +65,7 @@ def logRegRank(p_dict):
     #y_pred predicts whether player 0 wins (1) or not (0)
     #therefore return (1- y_pred ) to decide which player wins
     return (1 - y_pred[0])
+
 
 def NeuNetRank(p_dict):
     model = load_model('model_50_2.h5')

@@ -20,10 +20,15 @@ import pandas as pd
 #from getBracket import getBracket
 from getHeadToHead import getH2H
 from functions_tennis import currentRank
-from functions_tennis import logRegRank
 from functions_tennis import NeuNetRank
+from functions_tennis import ModelRank
 import json
 #from functions_tennis import isFloat
+
+"""
+Set model type (logreg, neunet, ranfor)
+"""
+mod_type = "ranfor"
 
 """
 Loop over data frame, need two player names at a time
@@ -81,19 +86,17 @@ def nextRound(df_r, r_num, type = 'logreg'):
             else:
                 #print(df_h2h.loc["vs"][2])
                 r2.append([df_r.iloc[i+1]["Name"],df_r.iloc[i+1]["Full Name"]])
-        elif type == 'logreg':
+        else:
             p_dict = {'r' + r_num :[df_r.iloc[i]["Name"],
                            df_r.iloc[i+1]["Name"]]}
-            winner = logRegRank(p_dict)
+            if type == 'logreg':
+                winner = ModelRank(p_dict, "logreg_new.h5")
+            elif type == 'neunet':
+                winner = NeuNetRank(p_dict)
+            elif type == 'ranfor':
+                winner = ModelRank(p_dict, "ranfor_new.h5")
             print(df_r.iloc[i+winner]["Name"])
             r2.append([df_r.iloc[i+winner]["Name"],df_r.iloc[i+winner]["Full Name"]])
-        elif type == 'neunet':
-            p_dict = {'r' + r_num :[df_r.iloc[i]["Name"],
-                           df_r.iloc[i+1]["Name"]]}
-            winner = NeuNetRank(p_dict)
-            print(df_r.iloc[i+winner]["Name"])
-            r2.append([df_r.iloc[i+winner]["Name"],df_r.iloc[i+winner]["Full Name"]])   
-
             
         
     df_r2 = pd.DataFrame(r2)
@@ -106,7 +109,7 @@ Calls nextRound
 """
 
 def loopRounds(in_df, r_name, r_num):
-    out_df = nextRound(in_df, r_num, type='logreg')
+    out_df = nextRound(in_df, r_num, type=mod_type)
     print(r_name + ":")
     print(out_df)
     #out_df.to_json(r_name.replace(" ","") + ".json",orient="values")
@@ -137,5 +140,5 @@ out_dict = {"Round 1" : df_r1.values.tolist(),
         "Final" : df_f.values.tolist(),
         "Winner" : df_w.values.tolist()}
 
-with open('Picks_logreg2.json', 'w') as fp:
+with open('Picks_' + mod_type + '.json', 'w') as fp:
     json.dump(out_dict, fp)
