@@ -12,11 +12,13 @@
 }*
 h2 {
   font: 16px sans-serif;
+  color: #3b3b3b
 }
 h3 {
   font: 24px sans-serif;
   font-weight: bold;
-  text-align: center;
+  color: #3b3b3b;
+  /*text-align: center;*/
 }
 .size1 {      
   font: 10px sans-serif;
@@ -28,29 +30,59 @@ h3 {
   font: 14px sans-serif;
   }
 .winn{
-  font: 18px sans-serif;
+  font: 12px sans-serif;
   font-weight: bold;
   }
 .winnp{
-  font: 14px sans-serif;
+  font: 18px sans-serif;
   }
+ .shadow{
+   box-shadow: 0 0 5px lightgray;
+ }
+ .winshadow{
+   filter: drop-shadow(0 0 5px lightgray);
+ }
+ .maindiv{
+  margin:10px;
+  padding:10px;
+  /*padding-right: 20px;*/
+ }
+ #container{width:97%;
+            }
+ #left{float:left;
+       width: 30%;}
+ #right{float:right;
+        width: 25%;}
+ #center{margin:0 auto;
+         width: 30%;}
  </style>
 
 </head>
 <body>
-  <h2><br></h2>
-  <h3> US OPEN 2018 - Bracket </h3>
-  <h2><br></h2>
-  <h2><center>Select Model:</center></h2>
-  <center><select id="json_sources" name="json_sources">
-    <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_currank.json" selected>Naive Model - Higher Rank</option>
-    <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_logreg.json">Logistic Regression</option>
-    <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_neunet.json">Neural Network</option>
-    <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_ranfor.json">Random Forest</option>
-    <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_ebusopen.json">Eduardo's Picks</option>
-  </select>​</center>
-  <h2><br></h2>
-  <div width="1750" height="1500"></div>
+  <div id='container' height = '50' padding='20px'>
+    <div id='left'>
+      <h3><center>US OPEN 2018 Bracket</center> </h3>
+    </div>
+    <div id='center'>
+      <div id='left'>
+        <h2>Select Model:</h2>
+      </div>
+      <div id='left'>
+        <select id="json_sources" name="json_sources" style='font: 10px Sans-Serif;color: #3b3b3b'>
+          <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_currank.json" >Naive Model - Higher Rank</option>
+          <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_logreg.json">Logistic Regression</option>
+          <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_neunet.json">Neural Network</option>
+          <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_ranfor.json">Random Forest</option>
+          <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_ebusopen.json" selected>Eduardo's Picks</option>
+        </select>​
+      </div>
+    </div>
+    <div id='right'>
+      <h1><right><img src="us_open.png" width="50%"></right></h1>
+    </div>
+    <div style="clear:both;"></div>
+  </div>
+
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script>
   
@@ -60,10 +92,10 @@ h3 {
       entry_width = (.7*width - 10*curve_width)/11
       top_buffer = 2;
 
-  var svg = d3.select("div").append("svg")
+  var svg = d3.select("div").attr("class","maindiv").append("svg")
                           .attr("id", "brack_viz")
-                          .attr("height", height)
-                          .attr("width", width);
+                          .attr("class","shadow")
+                          .attr("viewBox","0 0 " + width + " " + height);
 
 
   var rounds = [64, 32, 16, 8, 4, 2, 1]
@@ -101,7 +133,7 @@ var change = function() {
             var x = (entry_width)*j + (j-1)*curve_width;
             var y = (i + 0.5)*(entry_height/2)+top_buffer;
             var a = i % 2 == 0 ? 0.25:-0.25;
-              svg.append("path").attr("d", "M" + x + " " + y + "c10,0 10," + a*entry_height + " 20," + a*entry_height).attr("stroke", "black").attr("stroke-width", 3);
+              svg.append("path").attr("d", "M" + x + " " + y + " " + (x + entry_width/4 -curve_width/10) + " " + (y + a*entry_height)).attr("stroke", "#3b3b3b").attr("stroke-width", 1);
           }
         }
         for (i = 0; i < d; i++){
@@ -109,20 +141,20 @@ var change = function() {
               if ((j != 0) && (getRound(j,c_file)[i][0] != "")){
                 if (getRound(j,file)[i][0] == getRound(j,c_file)[i][0]){return "green"} else {return "red"}
                 }
-              else {return "black"}
+              else {return "#3b3b3b"}
            }
 
           function correct_new(j,i, next_elem){
               if ((j != 0) && (getRound(j,c_file)[i][0] != "")){
                 if (next_elem.innerHTML == getRound(j,c_file)[i][0]){return "green"} else {return "red"}
                 }
-              else {return "black"}
+              else {return "#3b3b3b"}
             }
           var right_pick = correct(j,i)                        
 
           var x = (entry_width + curve_width)*j;
           var y = (i + 0.5)*entry_height+top_buffer;
-          svg.append("path").attr("id","lpath" + j + "_" + i).attr("d", "M" + x + " " + y + " l " + entry_width + " 0").attr("stroke", "black").attr("stroke-width", 3);
+          svg.append("path").attr("id","lpath" + j + "_" + i).attr("d", "M" + x + " " + y + " l " + entry_width + " 0").attr("stroke", "#3b3b3b").attr("stroke-width", 1);
           svg.append("text")
             .attr("id","lfill" + j + "_" + i)
             .attr("fill", right_pick)
@@ -141,11 +173,6 @@ var change = function() {
             .on("mouseout",function(d) {d3.select(this).style("cursor","default");})
             ;
 
-            // textElement = document.getElementById("lfill" + j + "_" + i);
-            // wid = textElement.getBBox().width;
-            // hei = textElement.getBBox().height;
-            // textElement.style.width = wid;
-            // textElement.style.height = hei;
 
             function ClickFct(d){
               //Get i and j from this element
@@ -221,7 +248,7 @@ var change = function() {
             var x =(entry_width)*j + (j-1)*curve_width;
             var y = (i + 0.5)*(entry_height/2)+top_buffer;
             var a = i % 2 == 0 ? 0.25:-0.25;
-              right.append("path").attr("d", "M" + x + " " + y + "c10,0 10," + a*entry_height + " 20," + a*entry_height).attr("stroke", "black").attr("stroke-width", 3);
+              right.append("path").attr("d", "M" + x + " " + y + " " + (x + entry_width/4 -curve_width/10) + " " + (y + a*entry_height)).attr("stroke", "#3b3b3b").attr("stroke-width", 1);
           }
         }
         for (i = 0; i < d; i++){
@@ -229,19 +256,19 @@ var change = function() {
               if ((j != 0) && (getRound(j,c_file)[i + 2 **(6-j)][0] != "")){
                 if (getRound(j,file) [i + 2 **(6-j)][0] == getRound(j,c_file) [i + 2 **(6-j)][0]) {return "green"} else {return "red"}
               }
-              else {return "black"}
+              else {return "#3b3b3b"}
             }
           function correct_new(j,i, next_elem){
               if ((j != 0) && (getRound(j,c_file)[i + 2 **(6-j)][0] != "")){
                 if (next_elem.innerHTML == getRound(j,c_file) [i + 2 **(6-j)][0]) {return "green"} else {return "red"}
               }
-              else {return "black"}
+              else {return "#3b3b3b"}
             }              
           var right_pick = correct(j,i)  
           var x = (entry_width + curve_width)*j;
           var entry_pos = 2*x + entry_width;
           var y = (i + 0.5)*entry_height+top_buffer;
-          right.append("path").attr("id","rpath" + j + "_" + i).attr("d", "M" + x + " " + y + " l " + entry_width + " 0").attr("stroke", "black").attr("stroke-width", 3);
+          right.append("path").attr("id","rpath" + j + "_" + i).attr("d", "M" + x + " " + y + " l " + entry_width + " 0").attr("stroke", "#3b3b3b").attr("stroke-width", 1);
           right.append("text")
             .attr("id","rfill" + j + "_" + i)
             .attr("fill", right_pick)
@@ -331,38 +358,63 @@ var change = function() {
       var borderPath = winner.append("rect")
         .attr("width",entry_width*1.5)
         .attr("height", height * 0.05)
-        .attr("stroke","black")
+        .attr("class","winshadow")
+        //.attr("stroke","#3b3b3b")
         .attr("fill","white")
         .attr("fill-opacity",100)
         .attr("x",width/2 - ((entry_width*1.5)/2))
         .attr("y",height*0.1);
 
+      var greenRect = winner.append("rect")
+        .attr("width",entry_width*1.5)
+        .attr("height", height * 0.05 *0.4)
+        .attr("fill","limegreen")
+        .attr("fill-opacity",100)
+        .attr("x",width/2 - ((entry_width*1.5)/2))
+        .attr("y",height*0.1);
+
       var winnerText = winner.append("text")
-        .attr("x",width/2-((entry_width*1.5)/2)+entry_width*0.4)
+        .attr("x",width/2-((entry_width*1.5)/2)+entry_width*0.5)
         .attr("y",height*(0.1 + 0.014))
+        .attr("fill","white")
         .attr("class","winn")
-        .text("Winner:")
+        .text("WINNER")
 
       var winnerFinal = winner.append("text")
         .attr("id","win_text")
         .attr("x",width/2-((entry_width*1.5)/2)+entry_width*0.34)
-        .attr("y",height*(0.1 + 0.035))
+        .attr("y",height*(0.1 + 0.04))
         .attr("class","winnp")
         .attr("fill",function(d){if (file["Winner"][0][0] == c_file["Winner"][0][0]){return "green"} else {return "red"}})
         .attr("text-decoration",function(d){if (file["Winner"][0][0] != c_file["Winner"][0][0]){return "line-through"}})
         .text(file["Winner"][0][0])
 
-      var logo_width = 320,
-          logo_height = 180;
+      var vs_circle = svg.append("g")
 
-      var logo = svg.append("g").attr("width",logo_width).attr("height",logo_height)
+      var circle = vs_circle.append("circle")
+        .attr("r", 50)
+        .attr("cx",width*0.5)
+        .attr("cy",height*0.5)
+        .attr("fill","lightgray")
 
-      var logo_img = logo.append("svg:image")
-        .attr("xlink:href","us_open.jpg")
-        .attr("x", width/2- logo_width/2 )
-        .attr("y", height/5)
-        .attr("height",logo_height)
-        .attr("width",logo_width)
+      var circleText = vs_circle.append("text")
+        .attr("x", width*0.5 - 23)
+        .attr("y", height*0.5 + 12)
+        .attr("style","font:35px sans-serif; font-weight:bold")
+        .attr("fill","white")
+        .text("VS")
+
+      // var logo_width = 320,
+      //     logo_height = 180;
+
+      // var logo = svg.append("g").attr("width",logo_width).attr("height",logo_height)
+
+      // var logo_img = logo.append("svg:image")
+      //   .attr("xlink:href","us_open.jpg")
+      //   .attr("x", width/2- logo_width/2 )
+      //   .attr("y", height/5)
+      //   .attr("height",logo_height)
+      //   .attr("width",logo_width)
   })
 }
 
