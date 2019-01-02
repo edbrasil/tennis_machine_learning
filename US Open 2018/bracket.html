@@ -127,7 +127,7 @@ var change = function() {
             .attr("id","lfill" + j + "_" + i)
             .attr("fill", right_pick)
             .attr("dy",function(d){if (j == 0){return "-2"} else {return "-5"}})
-            .append("tspan")
+            .append("tspan") 
             .append("textPath")
             .attr("id","ltext" + j + "_" + i)
             .attr("xlink:href","#lpath" + j + "_" + i)
