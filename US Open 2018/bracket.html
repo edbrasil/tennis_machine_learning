@@ -40,6 +40,7 @@ h3 {
    box-shadow: 0 0 5px lightgray;
  }
  .winshadow{
+   -webkit-filter: drop-shadow(0 0 5px lightgray);
    filter: drop-shadow(0 0 5px lightgray);
  }
  .maindiv{
@@ -68,7 +69,7 @@ h3 {
         <h2>Select Model:</h2>
       </div>
       <div id='left'>
-        <select id="json_sources" name="json_sources" style='font: 10px Sans-Serif;color: #3b3b3b'>
+        <select id="json_sources" name="json_sources" style='font: 14px Sans-Serif;color: #3b3b3b'>
           <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_currank.json" >Naive Model - Higher Rank</option>
           <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_logreg.json">Logistic Regression</option>
           <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_neunet.json">Neural Network</option>
@@ -78,7 +79,7 @@ h3 {
       </div>
     </div>
     <div id='right'>
-      <h1><right><img src="us_open.png" width="50%"></right></h1>
+      <h1><right><img src="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/us_open.png" width="50%"></right></h1>
     </div>
     <div style="clear:both;"></div>
   </div>
