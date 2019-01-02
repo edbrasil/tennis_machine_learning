@@ -126,7 +126,6 @@ var change = function() {
           svg.append("text")
             .attr("id","lfill" + j + "_" + i)
             .attr("fill", right_pick)
-            .append("tspan")
             .attr("dy",function(d){if (j == 0){return "-2"} else {return "-5"}})
             .append("textPath")
             .attr("id","ltext" + j + "_" + i)
