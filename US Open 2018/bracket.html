@@ -141,6 +141,12 @@ var change = function() {
             .on("mouseout",function(d) {d3.select(this).style("cursor","default");})
             ;
 
+            // textElement = document.getElementById("lfill" + j + "_" + i);
+            // wid = textElement.getBBox().width;
+            // hei = textElement.getBBox().height;
+            // textElement.style.width = wid;
+            // textElement.style.height = hei;
+
             function ClickFct(d){
               //Get i and j from this element
               j_click = Number(this.id.substring(5,6));
