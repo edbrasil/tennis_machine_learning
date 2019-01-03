@@ -56,12 +56,13 @@ h3 {
   z-index: 1;
  }
 #container{width:97%;
+           margin-top: 10px;
             }
 #left{float:left;
        width: 30%;
        vertical-align:  middle; }
 #right{float:right;
-        width: 25%;
+        width: 30%;
         vertical-align:  middle;}
 #center{margin:0 auto;
          width: 30%;
@@ -70,7 +71,7 @@ h3 {
 
 </head>
 <body>
-  <div id='container' height = '50' padding='10px' padding-top='15px'>
+  <div id='container' height = '50'>
     <div id='left'>
       <h3><left>&nbsp;&nbsp;&nbsp;US OPEN 2018 Bracket</left> </h3>
     </div>
@@ -79,7 +80,7 @@ h3 {
         <h2>Select Model:</h2>
       </div>
       <div id='left'>
-        <select id="json_sources" name="json_sources" style='font: 14px Sans-Serif;color: #3b3b3b; vertical-align:  middle'>
+        <select id="json_sources" name="json_sources" style='font: 14px Sans-Serif;color: #3b3b3b;'>
           <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_currank.json" >Naive Model - Higher Rank</option>
           <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_logreg.json">Logistic Regression</option>
           <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_neunet.json">Neural Network</option>
@@ -89,7 +90,7 @@ h3 {
       </div>
     </div>
     <div id='right'>
-      <img style="float:right" src="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/us_open.png" width="50%"></right>
+      <img style="float:right" src="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/us_open.png" width="45%"></right>
     </div>
     <div style="clear:both;"></div>
   </div>
