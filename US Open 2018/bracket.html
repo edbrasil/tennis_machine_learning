@@ -1,15 +1,17 @@
 ﻿<!DOCTYPE html>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <head>
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
   <meta charset="utf-8">
   <title>Eduardo's Bracket - US Open 2018</title>
   <meta name="viewport" content="width=device-width">
   <style type="text/css">
 
 * {
+  font-family: 'Lato', Sans-Serif ;
   margin: 0;
   box-sizing: border-box;
-}*
+}
 h2 {
   font: 16px sans-serif;
   color: #3b3b3b
@@ -18,7 +20,6 @@ h3 {
   font: 24px sans-serif;
   font-weight: bold;
   color: #3b3b3b;
-  /*text-align: center;*/
 }
 .size1 {      
   font: 10px sans-serif;
@@ -36,40 +37,49 @@ h3 {
 .winnp{
   font: 18px sans-serif;
   }
- .shadow{
-   box-shadow: 0 0 5px lightgray;
+.shadow{
+   box-shadow: 0 0 10px lightgray;
  }
- .winshadow{
-   -webkit-filter: drop-shadow(0 0 5px lightgray);
-   filter: drop-shadow(0 0 5px lightgray);
- }
- .maindiv{
+
+.maindiv{
   margin:10px;
   padding:10px;
-  /*padding-right: 20px;*/
+  position: relative;
+  z-index: 0;
  }
- #container{width:97%;
+.overdiv{
+  position:absolute;
+  width: 14%;
+  height: 10%;
+  top:15%;
+  left:43%;
+  z-index: 1;
+ }
+#container{width:97%;
             }
- #left{float:left;
-       width: 30%;}
- #right{float:right;
-        width: 25%;}
- #center{margin:0 auto;
-         width: 30%;}
+#left{float:left;
+       width: 30%;
+       vertical-align:  middle; }
+#right{float:right;
+        width: 25%;
+        vertical-align:  middle;}
+#center{margin:0 auto;
+         width: 30%;
+         vertical-align:  middle; }
  </style>
 
 </head>
 <body>
-  <div id='container' height = '50' padding='20px'>
+  <div id='container' height = '50' padding='10px' padding-top='15px'>
     <div id='left'>
-      <h3><center>US OPEN 2018 Bracket</center> </h3>
+      <h3><left>&nbsp;&nbsp;&nbsp;US OPEN 2018 Bracket</left> </h3>
     </div>
     <div id='center'>
       <div id='left'>
         <h2>Select Model:</h2>
       </div>
       <div id='left'>
-        <select id="json_sources" name="json_sources" style='font: 14px Sans-Serif;color: #3b3b3b'>
+        <select id="json_sources" name="json_sources" style='font: 14px Sans-Serif;color: #3b3b3b; vertical-align:  middle'>
           <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_currank.json" >Naive Model - Higher Rank</option>
           <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_logreg.json">Logistic Regression</option>
           <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/Picks_neunet.json">Neural Network</option>
@@ -79,10 +89,12 @@ h3 {
       </div>
     </div>
     <div id='right'>
-      <h1><right><img src="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/us_open.png" width="50%"></right></h1>
+      <img style="float:right" src="https://raw.githubusercontent.com/edbrasil/aus-open/master/US%20Open%202018/us_open.png" width="50%"></right>
     </div>
     <div style="clear:both;"></div>
   </div>
+  <div id="brack_div"></div>
+  <div id="win_div"></div>
 
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script>
@@ -93,10 +105,12 @@ h3 {
       entry_width = (.7*width - 10*curve_width)/11
       top_buffer = 2;
 
-  var svg = d3.select("div").attr("class","maindiv").append("svg")
+  var svg = d3.select("#brack_div").attr("class","maindiv").append("svg")
                           .attr("id", "brack_viz")
                           .attr("class","shadow")
                           .attr("viewBox","0 0 " + width + " " + height);
+
+  var svg2 = d3.select('#win_div')
 
 
   var rounds = [64, 32, 16, 8, 4, 2, 1]
@@ -110,6 +124,7 @@ var dropdown = d3.select("#json_sources")
 var change = function() {
   var source = dropdown.node().options[dropdown.node().selectedIndex].value;
   svg.selectAll('*').remove()
+  svg2.selectAll('*').remove()
 
   d3.queue()
     .defer(d3.json, loc + source)
@@ -354,37 +369,38 @@ var change = function() {
         }
       });
 
-      var winner = svg.append("g")
+      var winner = d3.select("#win_div").attr("class","overdiv").append("svg")
+                          .attr("id", "win_viz")
+                          .attr("class","shadow")
+                          .attr("viewBox","0 0 " + (entry_width*1.5) + " " + (height* 0.05));
 
       var borderPath = winner.append("rect")
         .attr("width",entry_width*1.5)
         .attr("height", height * 0.05)
-        .attr("class","winshadow")
-        //.attr("stroke","#3b3b3b")
         .attr("fill","white")
         .attr("fill-opacity",100)
-        .attr("x",width/2 - ((entry_width*1.5)/2))
-        .attr("y",height*0.1);
+        .attr("x",0)
+        .attr("y",0);
 
       var greenRect = winner.append("rect")
         .attr("width",entry_width*1.5)
         .attr("height", height * 0.05 *0.4)
         .attr("fill","limegreen")
         .attr("fill-opacity",100)
-        .attr("x",width/2 - ((entry_width*1.5)/2))
-        .attr("y",height*0.1);
+        .attr("x",0)
+        .attr("y",0);
 
       var winnerText = winner.append("text")
-        .attr("x",width/2-((entry_width*1.5)/2)+entry_width*0.5)
-        .attr("y",height*(0.1 + 0.014))
+        .attr("x",entry_width*0.5)
+        .attr("y",height*(0.014))
         .attr("fill","white")
         .attr("class","winn")
         .text("WINNER")
 
       var winnerFinal = winner.append("text")
         .attr("id","win_text")
-        .attr("x",width/2-((entry_width*1.5)/2)+entry_width*0.34)
-        .attr("y",height*(0.1 + 0.04))
+        .attr("x",entry_width*0.275)
+        .attr("y",height*(0.04))
         .attr("class","winnp")
         .attr("fill",function(d){if (file["Winner"][0][0] == c_file["Winner"][0][0]){return "green"} else {return "red"}})
         .attr("text-decoration",function(d){if (file["Winner"][0][0] != c_file["Winner"][0][0]){return "line-through"}})
@@ -404,18 +420,6 @@ var change = function() {
         .attr("style","font:35px sans-serif; font-weight:bold")
         .attr("fill","white")
         .text("VS")
-
-      // var logo_width = 320,
-      //     logo_height = 180;
-
-      // var logo = svg.append("g").attr("width",logo_width).attr("height",logo_height)
-
-      // var logo_img = logo.append("svg:image")
-      //   .attr("xlink:href","us_open.jpg")
-      //   .attr("x", width/2- logo_width/2 )
-      //   .attr("y", height/5)
-      //   .attr("height",logo_height)
-      //   .attr("width",logo_width)
   })
 }
 
