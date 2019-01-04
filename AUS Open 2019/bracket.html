@@ -1,7 +1,8 @@
 ﻿<!DOCTYPE html>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <head>
-  <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+  <link rel="icon" href="data:;base64,iVBORwOKGO=" />
   <meta charset="utf-8">
   <title>Eduardo's Bracket - AUS Open 2019</title>
   <meta name="viewport" content="width=device-width">
@@ -13,11 +14,11 @@
   box-sizing: border-box;
 }
 h2 {
-  font: 16px sans-serif;
+  font: 1vw sans-serif;
   color: #3b3b3b
 }
 h3 {
-  font: 24px sans-serif;
+  font: 1.7vw sans-serif;
   font-weight: bold;
   color: #3b3b3b;
 }
@@ -40,7 +41,6 @@ h3 {
 .shadow{
    box-shadow: 0 0 10px lightgray;
  }
-
 .maindiv{
   margin:10px;
   padding:10px;
@@ -51,7 +51,7 @@ h3 {
   position:absolute;
   width: 14%;
   height: 10%;
-  top:15%;
+  top:22%;
   left:43%;
   z-index: 1;
  }
@@ -59,14 +59,24 @@ h3 {
            margin-top: 10px;
             }
 #left{float:left;
-       width: 30%;
-       vertical-align:  middle; }
+       width: 38vw;
+       display: inline-flex;
+      }
+#cleft{float:left;
+       width: 8vw;
+       display: inline-flex;
+      }
+#cright{float:left;
+       width: 10vw;
+       display: inline-flex;
+      }          
 #right{float:right;
-        width: 30%;
-        vertical-align:  middle;}
-#center{margin:0 auto;
-         width: 30%;
-         vertical-align:  middle; }
+       width: 30vw;
+        }
+#center{display: inline-flex;
+        margin-top: 0.4vw;
+        width: 20vw;
+         }
  </style>
 
 </head>
@@ -76,21 +86,21 @@ h3 {
       <h3><left>AUS OPEN 2019 Bracket</left> </h3>
     </div>
     <div id='center'>
-      <div id='left'>
+      <div id='cleft'>
         <h2>Select Model:</h2>
       </div>
-      <div id='left'>
-        <select id="json_sources" name="json_sources" style='font: 14px Sans-Serif;color: #3b3b3b;'>
-          <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/AUS%20Open%202019/Picks_currank.json" >Naive Model - Higher Rank</option>
-          <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/AUS%20Open%202019/Picks_logreg.json">Logistic Regression</option>
-          <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/AUS%20Open%202019/Picks_neunet.json">Neural Network</option>
-          <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/AUS%20Open%202019/Picks_ranfor.json">Random Forest</option>
-          <option value ="https://raw.githubusercontent.com/edbrasil/aus-open/master/AUS%20Open%202019/Picks_ebusopen.json" selected>Eduardo's Picks</option>
+      <div id='cright'>
+        <select id="json_sources" name="json_sources" style='font: 0.8vw Sans-Serif;color: #3b3b3b;'>
+          <option value ="https://raw.githubusercontent.com/edbrasil/tennis_machine_learning/master/AUS%20Open%202019/Picks_currank.json" >Naive Model - Higher Rank</option>
+          <option value ="https://raw.githubusercontent.com/edbrasil/tennis_machine_learning/master/AUS%20Open%202019/Picks_logreg.json">Logistic Regression</option>
+          <option value ="https://raw.githubusercontent.com/edbrasil/tennis_machine_learning/master/AUS%20Open%202019/Picks_neunet.json">Neural Network</option>
+          <option value ="https://raw.githubusercontent.com/edbrasil/tennis_machine_learning/master/AUS%20Open%202019/Picks_ranfor.json">Random Forest</option>
+          <option value ="https://raw.githubusercontent.com/edbrasil/tennis_machine_learning/master/AUS%20Open%202019/Picks_ebusopen.json" selected>Eduardo's Picks</option>
         </select>​
       </div>
     </div>
     <div id='right'>
-      <img style="float:right" src="https://raw.githubusercontent.com/edbrasil/aus-open/master/AUS%20Open%202019/aus_open.png" width="45%"></right>
+      <img style="float:right" src="https://raw.githubusercontent.com/edbrasil/tennis_machine_learning/master/AUS%20Open%202019/aus_open.png" width="25%"></right>
     </div>
     <div style="clear:both;"></div>
   </div>
@@ -119,7 +129,7 @@ h3 {
   // Start drawing left side
 
   var i;
-  var loc = "https://raw.githubusercontent.com/edbrasil/aus-open/master/AUS%20Open%202019/"
+  var loc = "https://raw.githubusercontent.com/edbrasil/tennis_machine_learning/master/AUS%20Open%202019/"
 
 var dropdown = d3.select("#json_sources")
 var change = function() {
