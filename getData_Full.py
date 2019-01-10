@@ -60,7 +60,7 @@ def loopRounds(r_in, r_out, p_dict,df,
     
     data = []
     
-    df_lu = pd.read_excel("bracket.xls"
+    df_lu = pd.read_excel("./data/bracket.xls"
                       ,sheet_name="Sheet1"
                       ,header=0)    
    
@@ -227,6 +227,7 @@ def wrapper(file_name = "R1_U2018.json",
             out_file = "data_U1_2018.xls",
             tourn = "US",
             court = "H",
+            rd = None,
             all_rounds = False):
     
     if type == 'json':
@@ -236,12 +237,17 @@ def wrapper(file_name = "R1_U2018.json",
     #print(p_dict)
     
     df = pd.DataFrame()
-    for i in range(1,len(p_dict)+1):
-        r_in = "r" + str(i)
-        #print(r_in)
+    if all_rounds:
+        num_i = len(p_dict)
+    else:
+        num_i = len(p_dict)+1
+        
+    for i in range(1,num_i):
         if all_rounds:
+            r_in = "r" + str(i)
             r_out = "r" + str(i+1)
         else:
+            r_in = rd
             r_out = None
         df = loopRounds(r_in,r_out,p_dict, df, 
                         tourn, court, all_rounds)
@@ -253,6 +259,8 @@ def wrapper(file_name = "R1_U2018.json",
     df.to_excel(writer,'Sheet1',header=True,index=True)
     writer.save()
 
-#file_name = {'r1':['R Nadal', 'R Federer']}
-#wrapper(file_name, type = 'dict', out_file = '_temp.xls',
-#        tourn = 'US', court = 'H', all_rounds = False)
+#file_name = {'r1':['R Federer', 'M Čilić']}
+#file_name = 'C_picks_U2016.json'
+#out_file = "./Excel Files/data_U2016.xls"
+#wrapper(file_name, type = 'json', out_file = out_file,
+#       tourn = 'US', court = 'H', all_rounds = True)

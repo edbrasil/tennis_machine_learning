@@ -14,12 +14,13 @@ from sklearn.externals import joblib
 Import data
 Returns: X and y for modeling
 """
-def data_prep_func(df, X_list=None, full_data = True, drop_extra=False, modtype="neunet"):
+def data_prep_func(df, X_list=None, full_data = True, drop_extra=False, modtype="neunet", pasttourn = True):
    
     """
     Fill missing values
     """
-    df[['P Titles','P Points','P ELO Points']] = df[['P Titles','P Points','P ELO Points']].fillna(0)
+    df[['P Titles','P Points','P ELO Points', 'P Seasons']] = \
+         df[['P Titles','P Points','P ELO Points', 'P Seasons']].fillna(0)
     
     df['P Rank'].fillna(500, inplace=True)
     df['P ELO Rank'].fillna(300, inplace=True)
@@ -67,9 +68,10 @@ def data_prep_func(df, X_list=None, full_data = True, drop_extra=False, modtype=
     df1.drop(drop_cols, axis=1, inplace=True )
     
     #Remove win from head-to-head since stats are drawn post-tournament
-    if not pd.isnull(df1['Player Win_0'].iloc[0]):
-        df1['P H2H_0'] = df1['P H2H_0'] - df1['Player Win_0']
-        df1['P H2H_1'] = df1['P H2H_1'] - (1 - df1['Player Win_0'])
+    if pasttourn:
+        if not pd.isnull(df1['Player Win_0'].iloc[0]):
+            df1['P H2H_0'] = df1['P H2H_0'] - df1['Player Win_0']
+            df1['P H2H_1'] = df1['P H2H_1'] - (1 - df1['Player Win_0'])
         
     """
     Dummy variables
@@ -100,6 +102,7 @@ def data_prep_func(df, X_list=None, full_data = True, drop_extra=False, modtype=
     """
     y = df1['Player Win_0']
     X = df1.drop(['Player Win_0', 'Player_0', 'Player_1'], axis=1)
+    #print(X.iloc[0,11:21])
     x_norm = X.values
     x_list = X.columns.values
     if full_data:
@@ -107,6 +110,7 @@ def data_prep_func(df, X_list=None, full_data = True, drop_extra=False, modtype=
         X = pd.DataFrame(data_transform.fit_transform(x_norm), columns=x_list)
         joblib.dump(data_transform, "scaler_"+modtype+".save")
     else:
+       # print(x_norm)
         data_transform = joblib.load("scaler_"+modtype+".save")
         X = pd.DataFrame(data_transform.transform(x_norm),columns=x_list)
     #print(X)

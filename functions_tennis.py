@@ -50,16 +50,16 @@ def currentRank(rank, current_rank):
     else:
         current_rank.append(int(rank.split(" ",1)[0]))
 
-def ModelRank(p_dict, model_file):
+def ModelRank(p_dict, model_file, pasttourn=True):
     logreg_cv = joblib.load(model_file)    
     wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
-        tourn = 'US', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
+        tourn = 'AUS', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
     
     df_t = pd.read_excel('_temp.xls', header = 0, index_col = 0)
     
     #global X_test
     X_test, y_test = data_prep_func(df_t, X_list="X_list_logreg.save", full_data=False
-                                    , drop_extra=False, modtype='logreg')
+                                    , drop_extra=False, modtype='logreg', pasttourn=pasttourn)
     
     y_pred = logreg_cv.predict(X_test)
     #y_pred predicts whether player 0 wins (1) or not (0)
@@ -67,23 +67,24 @@ def ModelRank(p_dict, model_file):
     return (1 - y_pred[0])
 
 
-def NeuNetRank(p_dict):
+def NeuNetRank(p_dict, pasttourn = True):
     model = load_model('model_50_2.h5')
     wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
-            tourn = 'US', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
+            tourn = 'AUS', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
 
     df_t = pd.read_excel('_temp.xls', header = 0, index_col = 0)
 
     #global X_test
-    X_test, y_test = data_prep_func(df_t, X_list="X_list_neunet.save", full_data=False, drop_extra=True)
+    X_test, y_test = data_prep_func(df_t, X_list="X_list_neunet.save", full_data=False
+                                    , drop_extra=True, pasttourn = pasttourn)
 
     y_pred = model.predict(X_test)
     #print(y_pred)
     #print(np.rint(y_pred))
     return int(round(y_pred.item(0)))
     
-#p_dict = {'r1': ['C Altamirano', 'U Humbert']}
-#logRegRank(p_dict, needTrain=False)
+#p_dict = {'r1': ['M Moraing', 'D Schwartzman']}
+#ModelRank(p_dict,"logreg_new.h5", pasttourn=False)
 #    
 
 

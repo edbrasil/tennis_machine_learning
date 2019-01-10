@@ -29,6 +29,7 @@ import json
 Set model type (logreg, neunet, ranfor)
 """
 mod_type = "ranfor"
+pasttourn = False
 
 """
 Loop over data frame, need two player names at a time
@@ -37,13 +38,13 @@ df_in[0 plays 1, etc]
 """
 #global X_list
 #get Round 1 from json
-json_file = open('C_picks_U2018.json')
+json_file = open('R1_A2019.json')
 json_str = json_file.read()
 json_data = json.loads(json_str)
 df_r1 = pd.DataFrame(json_data['Round 1'], columns = ["Name"])
 
 df_r1["Full Name"]=""   
-df_lu = pd.read_excel("./Excel Files/bracket.xls"
+df_lu = pd.read_excel("./data/bracket.xls"
                       ,sheet_name="Sheet1"
                       ,header=0)    
 
@@ -90,11 +91,11 @@ def nextRound(df_r, r_num, type = 'logreg'):
             p_dict = {'r' + r_num :[df_r.iloc[i]["Name"],
                            df_r.iloc[i+1]["Name"]]}
             if type == 'logreg':
-                winner = ModelRank(p_dict, "logreg_new.h5")
+                winner = ModelRank(p_dict, "logreg_new.h5", pasttourn = pasttourn)
             elif type == 'neunet':
-                winner = NeuNetRank(p_dict)
+                winner = NeuNetRank(p_dict, pasttourn = pasttourn)
             elif type == 'ranfor':
-                winner = ModelRank(p_dict, "ranfor_new.h5")
+                winner = ModelRank(p_dict, "ranfor_new.h5", pasttourn = pasttourn)
             print(df_r.iloc[i+winner]["Name"])
             r2.append([df_r.iloc[i+winner]["Name"],df_r.iloc[i+winner]["Full Name"]])
             
