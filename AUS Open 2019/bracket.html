@@ -165,18 +165,20 @@ var change = function() {
         }
         for (i = 0; i < d; i++){
           function correct(j,i){
+              if ((j != 0) && (getRound(j,c_file)[0][0]) != ""){
               if ((j != 0) && (getRound(j,c_file)[i][0] != "")){
                 if (getRound(j,file)[i][0] == getRound(j,c_file)[i][0]){return "green"} else {return "red"}
                 }
               else {return "#3b3b3b"}
-           }
+           }}
 
           function correct_new(j,i, next_elem){
+              if ((j != 0) && (getRound(j,c_file)[0][0]) != ""){
               if ((j != 0) && (getRound(j,c_file)[i][0] != "")){
                 if (next_elem.innerHTML == getRound(j,c_file)[i][0]){return "green"} else {return "red"}
                 }
               else {return "#3b3b3b"}
-            }
+            }}
           var right_pick = correct(j,i)                        
 
           var x = (entry_width + curve_width)*j;
@@ -257,8 +259,10 @@ var change = function() {
                next_elem.innerHTML = this.innerHTML;
                file["Winner"][0][0] = this.innerHTML;
                d3.select("#win_text")
-                 .attr("fill",function(d){if (next_elem.innerHTML == c_file["Winner"][0][0]){return "green"} else {return "red"}})
-                 .attr("text-decoration",function(d){if (next_elem.innerHTML != c_file["Winner"][0][0]){return "line-through"}
+                 .attr("fill",function(d){if (next_elem.innerHTML == c_file["Winner"][0][0]){return "green"} 
+                                          else if (c_file["Winner"][0][0] == ""){return "#3b3b3b"}
+                                          else {return "red"}})
+                 .attr("text-decoration",function(d){if ((c_file["Winner"][0][0] != "" && next_elem.innerHTML != c_file["Winner"][0][0])){return "line-through"}
                                                      else {return "none"}})
             }
             //console.log(file)
@@ -280,17 +284,19 @@ var change = function() {
         }
         for (i = 0; i < d; i++){
             function correct(j,i){
+              if ((j != 0) && (getRound(j,c_file)[0][0]) != ""){
               if ((j != 0) && (getRound(j,c_file)[i + 2 **(6-j)][0] != "")){
                 if (getRound(j,file) [i + 2 **(6-j)][0] == getRound(j,c_file) [i + 2 **(6-j)][0]) {return "green"} else {return "red"}
               }
               else {return "#3b3b3b"}
-            }
+            }}
           function correct_new(j,i, next_elem){
+              if ((j != 0) && (getRound(j,c_file)[0][0]) != ""){
               if ((j != 0) && (getRound(j,c_file)[i + 2 **(6-j)][0] != "")){
                 if (next_elem.innerHTML == getRound(j,c_file) [i + 2 **(6-j)][0]) {return "green"} else {return "red"}
               }
               else {return "#3b3b3b"}
-            }              
+            } }             
           var right_pick = correct(j,i)  
           var x = (entry_width + curve_width)*j;
           var entry_pos = 2*x + entry_width;
@@ -371,8 +377,10 @@ var change = function() {
                file["Winner"][0][0] = this.innerHTML;
                file["Winner"][0][1] = "";
                d3.select("#win_text")
-                 .attr("fill",function(d){if (next_elem.innerHTML == c_file["Winner"][0][0]){return "green"} else {return "red"}})
-                 .attr("text-decoration",function(d){if (next_elem.innerHTML != c_file["Winner"][0][0]){return "line-through"}
+                 .attr("fill",function(d){if (next_elem.innerHTML == c_file["Winner"][0][0]){return "green"}
+                                          else if (c_file["Winner"][0][0] == ""){return "#3b3b3b"}
+                                          else {return "red"}})
+                 .attr("text-decoration",function(d){if ((c_file["Winner"][0][0] != "" && next_elem.innerHTML != c_file["Winner"][0][0])){return "line-through"}
                                                      else {return "none"}})
               }
               console.log(JSON.stringify(file))
@@ -413,8 +421,10 @@ var change = function() {
         .attr("x",entry_width*0.275)
         .attr("y",height*(0.04))
         .attr("class","winnp")
-        .attr("fill",function(d){if (file["Winner"][0][0] == c_file["Winner"][0][0]){return "green"} else {return "red"}})
-        .attr("text-decoration",function(d){if (file["Winner"][0][0] != c_file["Winner"][0][0]){return "line-through"}})
+        .attr("fill",function(d){if (file["Winner"][0][0] == c_file["Winner"][0][0]){return "green"}
+                                 else if (c_file["Winner"][0][0] == ""){return "#3b3b3b"}
+                                 else {return "red"}})
+        .attr("text-decoration",function(d){if ((file["Winner"][0][0] != c_file["Winner"][0][0]) && c_file["Winner"][0][0] != ""){return "line-through"}})
         .text(file["Winner"][0][0])
 
       var vs_circle = svg.append("g")
