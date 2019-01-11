@@ -30,6 +30,7 @@ Set model type (logreg, neunet, ranfor)
 """
 mod_type = "ranfor"
 pasttourn = False
+j_file = 'R1_A2019.json' #JSON file containing round 1
 
 """
 Loop over data frame, need two player names at a time
@@ -38,7 +39,7 @@ df_in[0 plays 1, etc]
 """
 #global X_list
 #get Round 1 from json
-json_file = open('R1_A2019.json')
+json_file = open(j_file)
 json_str = json_file.read()
 json_data = json.loads(json_str)
 df_r1 = pd.DataFrame(json_data['Round 1'], columns = ["Name"])
@@ -58,7 +59,7 @@ for i in range(128):
 #print (df_r1)
 
 """
-Populates next round based on current_rank
+Populates next round based on mod_type
 Called by following function loopRounds
 """
 def nextRound(df_r, r_num, type = 'logreg'):

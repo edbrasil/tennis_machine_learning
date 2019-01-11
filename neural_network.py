@@ -24,11 +24,11 @@ import pandas as pd
 from sklearn.externals import joblib
 import matplotlib.pyplot as plt
 
-tourn_list = ['U2016','A2017','F2017','W2017','U2017','A2018','F2018','W2018']
+tourn_list = ['A2017','F2017','W2017','U2017','A2018','F2018','W2018','U2018']
 df_list = []
 
 for f in tourn_list:
-    df_list.append(pd.read_excel('./Excel Files/data_'+f+'.xls', header = 0, index_col = 0))
+    df_list.append(pd.read_excel('./data/data_'+f+'.xls', header = 0, index_col = 0))
 
 df_train = pd.concat(df_list, ignore_index = True)
 
