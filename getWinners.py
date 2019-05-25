@@ -30,7 +30,7 @@ Set model type (logreg, neunet, ranfor)
 """
 mod_type = "ranfor"
 pasttourn = False
-j_file = 'R1_A2019.json' #JSON file containing round 1
+j_file = 'R1_F2019.json' #JSON file containing round 1
 
 """
 Loop over data frame, need two player names at a time

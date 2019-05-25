@@ -71,7 +71,7 @@ Display confusion matrix, classification report and prediction results
 from sklearn.metrics import classification_report, confusion_matrix
 
 #Use US Open 2018 as testing
-df_U8 = pd.read_excel('./Excel Files/data_U2018.xls', header = 0, index_col = 0)
+df_U8 = pd.read_excel('./data/data_U2018.xls', header = 0, index_col = 0)
     
 X_test, y_test = data_prep_func(df_U8, X_list="X_list_logreg.save", full_data=False
                                     , drop_extra=False, modtype='logreg')    
