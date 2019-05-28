@@ -53,7 +53,7 @@ def currentRank(rank, current_rank):
 def ModelRank(p_dict, model_file, pasttourn=True):
     logreg_cv = joblib.load(model_file)    
     wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
-        tourn = 'AUS', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
+        tourn = 'FRE', court = 'C', rd = list(p_dict.keys())[0], all_rounds = False) 
     
     df_t = pd.read_excel('_temp.xls', header = 0, index_col = 0)
     
@@ -70,7 +70,7 @@ def ModelRank(p_dict, model_file, pasttourn=True):
 def NeuNetRank(p_dict, pasttourn = True):
     model = load_model('model_50_2.h5')
     wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
-            tourn = 'AUS', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
+            tourn = 'FRE', court = 'C', rd = list(p_dict.keys())[0], all_rounds = False) 
 
     df_t = pd.read_excel('_temp.xls', header = 0, index_col = 0)
 
