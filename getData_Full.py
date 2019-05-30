@@ -222,7 +222,7 @@ def loopRounds(r_in, r_out, p_dict,df,
     df = pd.concat([df,df1])
     return df
 
-def wrapper(file_name = "R1_U2018.json",
+def wrapper(file_name = "R1_A2019.json",
             type = 'json',
             out_file = "data_U1_2018.xls",
             tourn = "US",
@@ -258,6 +258,14 @@ def wrapper(file_name = "R1_U2018.json",
     writer = pd.ExcelWriter(out_file)
     df.to_excel(writer,'Sheet1',header=True,index=True)
     writer.save()
+
+wrapper(file_name = "R1_A2019.json",
+            type = 'json',
+            out_file = "data_A2019.xls",
+            tourn = "AUS",
+            court = "H",
+            rd = None,
+            all_rounds = True)
 
 #file_name = {'r1':['R Federer', 'M Čilić']}
 #file_name = 'C_picks_U2016.json'
