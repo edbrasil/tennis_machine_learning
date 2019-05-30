@@ -15,8 +15,8 @@ from selenium import webdriver
 import json
 
 url_use = "https://en.wikipedia.org/wiki/2019_Australian_Open_%E2%80%93_Men%27s_Singles#Draw"
-out_file = "R1_A2019.json"
-all_rounds = False
+out_file = "C_picks_A2019.json"
+all_rounds = True
 col_list = [2, 11, 12, 13, 2, 3, 4]
 t_start = [4, 4, 4, 4, 3, 3, 3 ]
 t_end = [12, 12, 12, 12, 4, 4, 4]

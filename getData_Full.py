@@ -259,7 +259,7 @@ def wrapper(file_name = "R1_A2019.json",
     df.to_excel(writer,'Sheet1',header=True,index=True)
     writer.save()
 
-wrapper(file_name = "R1_A2019.json",
+wrapper(file_name = "C_picks_A2019.json",
             type = 'json',
             out_file = "data_A2019.xls",
             tourn = "AUS",
