@@ -28,9 +28,9 @@ import json
 """
 Set model type (logreg, neunet, ranfor)
 """
-mod_type = "ranfor"
+mod_type = "neunet"
 pasttourn = False
-j_file = 'R1_F2019.json' #JSON file containing round 1
+j_file = 'R1_W2019.json' #JSON file containing round 1
 
 """
 Loop over data frame, need two player names at a time
@@ -78,8 +78,8 @@ def nextRound(df_r, r_num, type = 'logreg'):
         if type == 'currank':
             df_h2h = getH2H(player1,player2)
             current_rank = []
+            currentRank(df_h2h.loc["Current Rank"][0],current_rank)
             currentRank(df_h2h.loc["Current Rank"][1],current_rank)
-            currentRank(df_h2h.loc["Current Rank"][2],current_rank)
             #print(current_rank)
         
             if current_rank[0] < current_rank[1]:

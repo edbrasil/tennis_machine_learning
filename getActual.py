@@ -14,9 +14,9 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import json
 
-url_use = "https://en.wikipedia.org/wiki/2019_Australian_Open_%E2%80%93_Men%27s_Singles#Draw"
-out_file = "C_picks_A2019.json"
-all_rounds = True
+url_use = "https://en.wikipedia.org/wiki/2019_Wimbledon_Championships_%E2%80%93_Men%27s_Singles#Draw"
+out_file = "R1_W2019.json"
+all_rounds = False
 col_list = [2, 11, 12, 13, 2, 3, 4]
 t_start = [4, 4, 4, 4, 3, 3, 3 ]
 t_end = [12, 12, 12, 12, 4, 4, 4]
@@ -158,7 +158,7 @@ if all_rounds:
     df8 = getChampion()
 
 if all_rounds:
-    dict = {"Round 1": df1.values.tolist(),
+    p_dict = {"Round 1": df1.values.tolist(),
         "Round 2" : df2.values.tolist(),
         "Round 3" : df3.values.tolist(),
         "Round 4" : df4.values.tolist(),
@@ -167,8 +167,8 @@ if all_rounds:
         "Final" : df7.values.tolist(),
         "Winner" : df8.values.tolist()}
 else:
-    dict = {"Round 1": df1.values.tolist()}
+    p_dict = {"Round 1": df1.values.tolist()}
 
 with open(out_file, 'w') as fp:
-    json.dump(dict, fp)
+    json.dump(p_dict, fp)
 

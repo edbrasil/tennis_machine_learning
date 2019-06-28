@@ -35,25 +35,41 @@ def getH2H (player1,player2):
     #print(soup)
     
     df1, = pd.read_html(str(soup))
-    df1 = df1.iloc[0:34,0:3]
-    df1[[0,1,2]] = df1[[1,0,2]]
-    df1.set_index(0, drop=True, inplace=True)
+    #print(df1)
+    df1 = df1.iloc[0:34,[0,2,4]]
+    #print(df1)
+    #print(df1.columns)
+    names = [df1.columns[0][0], 'vs',df1.columns[2][0]]
+    h2h = [df1.columns[0][1], df1.columns[2][1]]
+    df1.columns = names
+    #print(df1.columns)
+    #print(df1)
+    #df1[[0,1,2]] = df1[[1,0,2]]
+    #df1.reset_index()
+    df1.set_index("vs", drop=True, inplace=True)
+   # print(df1.index)
+    if "H2H" in df1.index:
+      #  print(True)
+        df1.drop("H2H", inplace=True)
+   # print(df1)
+   # print(h2h)    
+    df1.loc["H2H"] = h2h
    # print(df1)
     return df1
 
 """
 Sample call
 
-player1 = "Novak Djokovic".replace(" ","%20")
-player2 = "Juan Martin Del Potro".replace(" ","%20")
+player1 = "Denis%20Kudla".replace(" ","%20")
+player2 = "Malek%20Jaziri".replace(" ","%20")
 
 df_h2h = getH2H(player1,player2)
-#print(df_h2h)
+print(df_h2h)
 
+print(df_h2h.loc["H2H"][0])
 print(df_h2h.loc["H2H"][1])
-print(df_h2h.loc["H2H"][2])
-"""
 
+"""
 
 #soup_player = soup.findAll("tr")[0]
 #soup_h2h = soup.findAll("tr")[1]

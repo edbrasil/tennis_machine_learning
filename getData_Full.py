@@ -112,7 +112,7 @@ def loopRounds(r_in, r_out, p_dict,df,
 
         def getStat(label, i, is_rank = 0):
             if label in df_h2h.index:
-                pstat = df_h2h.loc[label][i]
+                pstat = df_h2h.loc[label][i-1]
             else:
                 pstat = ""
             return pstat
@@ -259,13 +259,13 @@ def wrapper(file_name = "R1_A2019.json",
     df.to_excel(writer,'Sheet1',header=True,index=True)
     writer.save()
 
-wrapper(file_name = "C_picks_A2019.json",
-            type = 'json',
-            out_file = "data_A2019.xls",
-            tourn = "AUS",
-            court = "H",
-            rd = None,
-            all_rounds = True)
+#wrapper(file_name = "C_picks_F2019.json",
+#            type = 'json',
+#            out_file = "data_F2019.xls",
+#            tourn = "FRE",
+#            court = "C",
+#            rd = None,
+#            all_rounds = True)
 
 #file_name = {'r1':['R Federer', 'M Čilić']}
 #file_name = 'C_picks_U2016.json'
