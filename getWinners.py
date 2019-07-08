@@ -28,7 +28,7 @@ import json
 """
 Set model type (logreg, neunet, ranfor)
 """
-mod_type = "ranfor"
+mod_type = "neunet"
 pasttourn = False
 j_file = 'R1_W2019.json' #JSON file containing round 1
 
