@@ -1,2 +1,8 @@
-Archive\
-__pycache__\
+Archive/*
+__pycache__/*
+X_list_*
+*.h5
+*.save
+Tennis Machine Learning - CAS & Python.ipynb
+credentials.json
+.ipynb_checkpoints/*

@@ -13,11 +13,12 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import json
+import xlwt
 
 url_use = "https://en.wikipedia.org/wiki/2019_Wimbledon_Championships_%E2%80%93_Men%27s_Singles#Draw"
-out_file = "R1_W2019.json"
-all_rounds = False
-col_list = [2, 11, 12, 13, 2, 3, 4]
+out_file = "FULL_W2019.json"
+all_rounds = True
+col_list = [2, 11, 20, 29, 2, 11, 20]
 t_start = [4, 4, 4, 4, 3, 3, 3 ]
 t_end = [12, 12, 12, 12, 4, 4, 4]
 
@@ -162,9 +163,9 @@ if all_rounds:
         "Round 2" : df2.values.tolist(),
         "Round 3" : df3.values.tolist(),
         "Round 4" : df4.values.tolist(),
-        "Quarterfinal" : df5.values.tolist(),
-        "Semifinal" : df6.values.tolist(),
-        "Final" : df7.values.tolist(),
+        "Quarterfinal" : df5.drop_duplicates().values.tolist(),
+        "Semifinal" : df6.drop_duplicates().values.tolist(),
+        "Final" : df7.drop_duplicates().values.tolist(),
         "Winner" : df8.values.tolist()}
 else:
     p_dict = {"Round 1": df1.values.tolist()}
