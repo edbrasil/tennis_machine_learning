@@ -38,7 +38,7 @@ c_space = np.logspace(-5, 8, 25)
 param_grid = {'C': c_space, 'penalty': ['l1', 'l2']}
 
 # Instantiate a logistic regression classifier: logreg
-logreg = LogisticRegression()
+logreg = LogisticRegression(solver='liblinear')
 
 # Instantiate the GridSearchCV object: logreg_cv
 logreg_cv = GridSearchCV(logreg, param_grid, cv=5)
