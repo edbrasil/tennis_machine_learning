@@ -70,14 +70,14 @@ def loopRounds(r_in, r_out, p_dict,df,
         #Player Names
         player_1 = p_dict[r_in][i]
         try:
-            p1_full = df_lu["Full Name"].loc[df_lu.loc[df_lu["Name"] == player_1].index].item()
+            p1_full = df_lu["Full Name"].loc[df_lu.loc[df_lu["Name"] == player_1].index].values[0]
         except ValueError:
             print("Value Error: " + player_1)
             
         player_2 = p_dict[r_in][i + 1]
         
         try:
-            p2_full = df_lu["Full Name"].loc[df_lu.loc[df_lu["Name"] == player_2].index].item()
+            p2_full = df_lu["Full Name"].loc[df_lu.loc[df_lu["Name"] == player_2].index].values[0]
         except ValueError:
             print(player_2)
         

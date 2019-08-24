@@ -28,7 +28,7 @@ import json
 """
 Set model type (logreg, neunet, ranfor)
 """
-mod_type = "currank"
+mod_type = "logreg"
 pasttourn = False
 j_file = 'R1_U2019.json' #JSON file containing round 1
 
@@ -53,7 +53,7 @@ for i in range(128):
     #Player Names
     player_1 = df_r1["Name"][i]
     try:
-        df_r1["Full Name"][i] = df_lu["Full Name"].loc[df_lu.loc[df_lu["Name"] == player_1].index].item()
+        df_r1["Full Name"][i] = df_lu["Full Name"].loc[df_lu.loc[df_lu["Name"] == player_1].index].values[0]
     except ValueError:
         print("Value Error: " + player_1)
 #print (df_r1)
