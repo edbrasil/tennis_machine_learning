@@ -15,9 +15,9 @@ from selenium import webdriver
 import json
 import xlwt
 
-url_use = "https://en.wikipedia.org/wiki/2019_Wimbledon_Championships_%E2%80%93_Men%27s_Singles#Draw"
-out_file = "FULL_W2019.json"
-all_rounds = True
+url_use = "https://en.wikipedia.org/wiki/2019_US_Open_%E2%80%93_Men%27s_Singles#Draw"
+out_file = "R1_U2019.json"
+all_rounds = False
 col_list = [2, 11, 20, 29, 2, 11, 20]
 t_start = [4, 4, 4, 4, 3, 3, 3 ]
 t_end = [12, 12, 12, 12, 4, 4, 4]

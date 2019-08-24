@@ -28,9 +28,9 @@ import json
 """
 Set model type (logreg, neunet, ranfor)
 """
-mod_type = "ranfor"
+mod_type = "currank"
 pasttourn = False
-j_file = 'R1_W2019.json' #JSON file containing round 1
+j_file = 'R1_U2019.json' #JSON file containing round 1
 
 """
 Loop over data frame, need two player names at a time
