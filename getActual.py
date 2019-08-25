@@ -42,7 +42,7 @@ def getBracket (new_bracket = True, column = 11,
         options = webdriver.ChromeOptions()
         options.add_argument('headless')
         
-        browser = webdriver.Chrome(chrome_options=options)
+        browser = webdriver.Chrome(options=options)
         browser.get(url)
         soup = BeautifulSoup(browser.page_source, "lxml")
         browser.close()
