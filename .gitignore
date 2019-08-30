@@ -7,3 +7,6 @@ Tennis Machine Learning - CAS & Python.ipynb
 credentials.json
 .ipynb_checkpoints/*
 _temp.xls
+debug.log
+Picks_*.json
+R1_*.json
