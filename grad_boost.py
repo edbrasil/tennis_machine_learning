@@ -80,21 +80,21 @@ print("Accuracy: %f" %((1-cv_results["test-error-mean"]).iloc[-1]))
 """
 gbm_param_grid = {'objective':['binary:logistic'],
                   'learning_rate':[0.01, 0.1, 0.5, 0.9],
-                  'n_estimators':range(180,220,20),
+                  'n_estimators':range(170,200,10),
                   'subsample':[0.3, 0.5, 0.9],
-                  'max_depth':range(1,9),
+                  'max_depth':range(1,5),
                   'eval_metric':['rmse']}
 
-gbm = xgb.XGBRegressor()
+gbm = xgb.XGBClassifier()
 grid_mse = GridSearchCV(estimator=gbm, param_grid=gbm_param_grid,
-                        cv=4, verbose=1)
+                        cv=4, verbose=1, n_jobs = -1)
 grid_mse.fit(X_train,y_train)
 
 print("Best parameters found: ",grid_mse.best_params_) 
 print("Lowest RMSE found: ", np.sqrt(np.abs(grid_mse.best_score_))) 
 
 preds = grid_mse.predict(X_test)
-accuracy = float(np.sum(np.where(preds>0.5,1,0)==y_test))/y_test.shape[0]
+accuracy = float(np.sum(preds==y_test))/y_test.shape[0]
 print("accuracy: %f" % (accuracy))
 
 #END GRID SEARCH

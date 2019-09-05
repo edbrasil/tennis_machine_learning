@@ -13,7 +13,8 @@ import numpy as np
 from getData_Full import wrapper
 from data_prep import data_prep_func
 from keras.models import load_model
-from sklearn.externals import joblib
+#from sklearn.externals import joblib
+import joblib
 
 """
 Used by currentRank to determine if field is 
@@ -66,10 +67,10 @@ def ModelRank(p_dict, model_file, pasttourn=True):
     
     X_test = X_test[X_list]
 
-    if model_file == "xg_cl.h5":
-        y_pred = np.where(model.predict(X_test)>0.5,1,0)
-    else:
-        y_pred = model.predict(X_test)
+#    if model_file in ["xg_cl.h5", 'eclf.h5']:
+#        y_pred = np.where(model.predict(X_test)>0.5,1,0)
+#    else:
+    y_pred = model.predict(X_test)
     #y_pred predicts whether player 0 wins (1) or not (0)
     #therefore return (1- y_pred ) to decide which player wins
     return (1 - y_pred[0])

@@ -26,9 +26,9 @@ import json
 #from functions_tennis import isFloat
 
 """
-Set model type (logreg, neunet, ranfor, xg_cl)
+Set model type (logreg, neunet, ranfor, xg_cl, eclf)
 """
-mod_type = "xg_cl"
+mod_type = "eclf"
 pasttourn = False
 j_file = 'R1_U2019.json' #JSON file containing round 1
 
@@ -99,6 +99,8 @@ def nextRound(df_r, r_num, type = 'logreg'):
                 winner = ModelRank(p_dict, "ranfor_new.h5", pasttourn = pasttourn)
             elif type == 'xg_cl':
                 winner = ModelRank(p_dict, "xg_cl.h5", pasttourn = pasttourn)
+            elif type == 'eclf':
+                winner = ModelRank(p_dict, "eclf.h5", pasttourn = pasttourn)
             print(df_r.iloc[i+winner]["Name"])
             r2.append([df_r.iloc[i+winner]["Name"],df_r.iloc[i+winner]["Full Name"]])
             
