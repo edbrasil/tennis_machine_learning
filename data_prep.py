@@ -8,7 +8,8 @@ Created on Fri Nov 30 15:34:52 2018
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.externals import joblib
+#from sklearn.externals import joblib
+import joblib
 
 """
 Import data
@@ -113,6 +114,7 @@ def data_prep_func(df, X_list=None, full_data = True, drop_extra=False, modtype=
        # print(x_norm)
         data_transform = joblib.load("scaler_"+modtype+".save")
         X = pd.DataFrame(data_transform.transform(x_norm),columns=x_list)
+    
     #print(X)
     
     return X, y

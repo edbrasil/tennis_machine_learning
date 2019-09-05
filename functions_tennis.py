@@ -8,6 +8,7 @@ Created on Mon Sep 17 11:40:54 2018
 Import libraries
 """
 import pandas as pd
+import numpy as np
 #from logistic_regression import LogRegTennis
 from getData_Full import wrapper
 from data_prep import data_prep_func
@@ -51,7 +52,7 @@ def currentRank(rank, current_rank):
         current_rank.append(int(rank.split(" ",1)[0]))
 
 def ModelRank(p_dict, model_file, pasttourn=True):
-    logreg_cv = joblib.load(model_file)    
+    model = joblib.load(model_file)    
     wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
         tourn = 'US', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
     
@@ -61,7 +62,14 @@ def ModelRank(p_dict, model_file, pasttourn=True):
     X_test, y_test = data_prep_func(df_t, X_list="X_list_logreg.save", full_data=False
                                     , drop_extra=False, modtype='logreg', pasttourn=pasttourn)
     
-    y_pred = logreg_cv.predict(X_test)
+    X_list = joblib.load("X_list_logreg.save")
+    
+    X_test = X_test[X_list]
+
+    if model_file == "xg_cl.h5":
+        y_pred = np.where(model.predict(X_test)>0.5,1,0)
+    else:
+        y_pred = model.predict(X_test)
     #y_pred predicts whether player 0 wins (1) or not (0)
     #therefore return (1- y_pred ) to decide which player wins
     return (1 - y_pred[0])

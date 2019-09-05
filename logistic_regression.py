@@ -17,7 +17,8 @@ import pandas as pd
 # Import necessary modules
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
-from sklearn.externals import joblib
+#from sklearn.externals import joblib
+import joblib
 
 #Training tournaments
 

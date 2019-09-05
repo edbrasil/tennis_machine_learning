@@ -1,4 +1,3 @@
-Archive/*
 __pycache__/*
 X_list_*
 *.h5
@@ -9,4 +8,6 @@ credentials.json
 _temp.xls
 debug.log
 Picks_*.json
+!*/Picks_*.json
+Archive/*
 R1_*.json
