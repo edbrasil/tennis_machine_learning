@@ -11,3 +11,4 @@ Picks_*.json
 !*/Picks_*.json
 Archive/*
 R1_*.json
+*.DS_Store

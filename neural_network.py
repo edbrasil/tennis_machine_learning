@@ -61,7 +61,7 @@ result = model.fit(X_train, y_train, epochs=50
           ,validation_split = 0.3, callbacks=[early_stopping_monitor])
 
 # Create the plot
-plt.plot(result.history['val_loss'], 'r', result.history['val_acc'],'b')
+plt.plot(result.history['val_loss'], 'r', result.history['val_accuracy'],'b')
 plt.xlabel('Epochs')
 plt.ylabel('Validation score')
 plt.show()
