@@ -26,11 +26,11 @@ import json
 #from functions_tennis import isFloat
 
 """
-Set model type (logreg, neunet, ranfor, xg_cl, eclf)
+Set model type (currank, logreg, neunet, ranfor, xg_cl, eclf)
 """
-mod_type = "eclf"
+mod_type = "ranfor"
 pasttourn = False
-j_file = 'R1_U2019.json' #JSON file containing round 1
+j_file = 'R1_A2020.json' #JSON file containing round 1
 
 """
 Loop over data frame, need two player names at a time
@@ -54,8 +54,9 @@ for i in range(128):
     player_1 = df_r1["Name"][i]
     try:
         df_r1["Full Name"][i] = df_lu["Full Name"].loc[df_lu.loc[df_lu["Name"] == player_1].index].values[0]
-    except ValueError:
+    except (ValueError, IndexError):
         print("Value Error: " + player_1)
+
 #print (df_r1)
 
 """
