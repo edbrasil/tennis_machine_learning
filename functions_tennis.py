@@ -12,7 +12,7 @@ import pandas as pd
 #from logistic_regression import LogRegTennis
 from getData_Full import wrapper
 from data_prep import data_prep_func
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 #from sklearn.externals import joblib
 import joblib
 
