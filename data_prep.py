@@ -42,6 +42,14 @@ def data_prep_func(df, X_list=None, full_data = True, drop_extra=False, modtype=
     df['P Backhand'] = df['P Backhand'].fillna("Two-handed")
     
     """
+    Split H2H to get the number of wins without percentage
+    Input example: "2 (100.0%)"
+    Output example: 2
+    """
+    df['P H2H'] = df['P H2H'].str.split().str.get(0)
+    
+    
+    """
     For simplicity, extract year from Best Date
     """
     df['P Best Date'] = pd.to_datetime(df['P Best Date']).dt.year

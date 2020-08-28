@@ -39,8 +39,12 @@ def getH2H (player1,player2):
     df1 = df1.iloc[0:34,[0,2,4]]
     #print(df1)
     #print(df1.columns)
-    names = [df1.columns[0][0], 'vs',df1.columns[2][0]]
-    h2h = [df1.columns[0][1], df1.columns[2][1]]
+    if(isinstance(df1.keys(), pd.core.indexes.multi.MultiIndex)):
+        names = [df1.columns[0][0], 'vs',df1.columns[2][0]]
+        h2h = [df1.columns[0][1], df1.columns[2][1]]
+    else:
+        names = [df1.columns[0],'vs',df1.columns[2]]
+        h2h = ['0 (0.0%)','0 (0.0%)']
     df1.columns = names
     #print(df1.columns)
     #print(df1)

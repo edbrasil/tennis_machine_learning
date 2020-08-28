@@ -13,19 +13,21 @@ a neural network
 from data_prep import data_prep_func
 import numpy as np
 np.random.seed(100)
-import keras
-from keras.layers import Dense
-from keras.layers import Dropout
-from keras.models import Sequential
-from keras.utils import to_categorical
-from keras.callbacks import EarlyStopping
+#import keras
+import tensorflow as tf
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dropout
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.callbacks import EarlyStopping
 #from keras.models import load_model
 import pandas as pd
 #from sklearn.externals import joblib
 import joblib
 import matplotlib.pyplot as plt
 
-tourn_list = ['U2016','A2017','F2017','W2017','U2017','A2018','F2018','W2018','U2018','A2019','F2019','W2019']
+tourn_list = ['U2016','A2017','F2017','W2017','U2017','A2018','F2018',
+              'W2018','U2018','A2019','F2019','W2019','U2019','A2020']
 df_list = []
 
 for f in tourn_list:
@@ -42,7 +44,7 @@ joblib.dump(X_list, "X_list_neunet.save")
 # Specify the model
 n_cols = X_train.shape[1]
 
-keras.backend.clear_session()
+tf.keras.backend.clear_session()
 model = Sequential()
 num_nodes = 50
 model.add(Dense(num_nodes, activation='relu', input_shape = (n_cols,)))
