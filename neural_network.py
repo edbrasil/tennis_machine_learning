@@ -26,8 +26,8 @@ import pandas as pd
 import joblib
 import matplotlib.pyplot as plt
 
-tourn_list = ['U2016','A2017','F2017','W2017','U2017','A2018','F2018',
-              'W2018','U2018','A2019','F2019','W2019','U2019','A2020']
+tourn_list = ['F2017','W2017','U2017','A2018','F2018',
+              'W2018','U2018','A2019','F2019','W2019','U2019','A2020','U2020']
 df_list = []
 
 for f in tourn_list:
@@ -41,16 +41,19 @@ y_train = to_categorical(y_train)
 X_list = list(X_train.columns.values)
 joblib.dump(X_list, "X_list_neunet.save")
 
+print(X_train.shape)
+
 # Specify the model
 n_cols = X_train.shape[1]
 
 tf.keras.backend.clear_session()
 model = Sequential()
-num_nodes = 50
+num_nodes = 125
+num_nodes2 = 50
 model.add(Dense(num_nodes, activation='relu', input_shape = (n_cols,)))
-model.add(Dropout(0.3))
+model.add(Dropout(0.1))
 model.add(Dense(num_nodes, activation='relu'))
-model.add(Dropout(0.3))
+model.add(Dropout(0.1))
 #model.add(Dense(num_nodes, activation='relu'))
 #model.add(Dense(num_nodes, activation='relu'))
 model.add(Dense(2,activation='sigmoid'))

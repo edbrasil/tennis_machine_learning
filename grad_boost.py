@@ -30,7 +30,8 @@ from sklearn.model_selection import GridSearchCV
 
 #Training tournaments
 
-tourn_list = ['U2016','A2017','F2017','W2017', 'U2017','A2018','F2018','W2018','U2018','A2019','F2019','W2019','U2019','A2020']
+tourn_list = ['U2016','A2017','F2017','W2017', 'U2017','A2018','F2018',\
+              'W2018','U2018','A2019','F2019','W2019','U2019','A2020','U2020']
 df_list = []
 
 for f in tourn_list:
@@ -39,6 +40,9 @@ for f in tourn_list:
 df_train = pd.concat(df_list, ignore_index = True)
 
 X, y = data_prep_func(df_train, modtype="logreg")
+#X.to_csv('tennis_train.csv')
+#y.to_csv('tennis_target.csv')
+
 X_list = list(X.columns.values)
 joblib.dump(X_list, "X_list_logreg.save")
 

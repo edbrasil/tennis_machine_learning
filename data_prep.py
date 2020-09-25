@@ -46,8 +46,11 @@ def data_prep_func(df, X_list=None, full_data = True, drop_extra=False, modtype=
     Input example: "2 (100.0%)"
     Output example: 2
     """
-    df['P H2H'] = df['P H2H'].str.split().str.get(0)
     
+    if df['P H2H'].dtype == np.object:
+        df['P H2H'] = df['P H2H'].apply( \
+                            lambda x: int(x.split("(")[0]) \
+                            if isinstance(x,str) else x )
     
     """
     For simplicity, extract year from Best Date
@@ -114,12 +117,13 @@ def data_prep_func(df, X_list=None, full_data = True, drop_extra=False, modtype=
     #print(X.iloc[0,11:21])
     x_norm = X.values
     x_list = X.columns.values
+
     if full_data:
         data_transform = MinMaxScaler()
         X = pd.DataFrame(data_transform.fit_transform(x_norm), columns=x_list)
         joblib.dump(data_transform, "scaler_"+modtype+".save")
     else:
-       # print(x_norm)
+    # print(x_norm)
         data_transform = joblib.load("scaler_"+modtype+".save")
         X = pd.DataFrame(data_transform.transform(x_norm),columns=x_list)
     

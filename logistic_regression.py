@@ -23,7 +23,8 @@ import joblib
 #Training tournaments
 
 tourn_list = ['U2016','A2017','F2017','W2017', 'U2017','A2018','F2018',
-              'W2018','U2018','A2019','F2019','W2019','U2019','A2020']
+              'W2018','U2018','A2019','F2019','W2019','U2019','A2020',
+              'U2020']
 df_list = []
 
 for f in tourn_list:
@@ -37,7 +38,7 @@ joblib.dump(X_list, "X_list_logreg.save")
 
 # Setup the hyperparameter grid
 c_space = np.logspace(-5, 8, 25)
-param_grid = {'C': c_space, 'penalty': ['l1', 'l2']}
+param_grid = {'C': c_space, 'penalty': [ 'l1','l2']}
 
 # Instantiate a logistic regression classifier: logreg
 logreg = LogisticRegression(solver='liblinear')
