@@ -12,3 +12,7 @@ Picks_*.json
 Archive/*
 R1_*.json
 *.DS_Store
+tennis_train.csv
+tennis_target.csv
+tempfile.csv
+Full_U2020.json
