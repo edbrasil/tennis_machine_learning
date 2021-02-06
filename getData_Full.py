@@ -259,13 +259,13 @@ def wrapper(file_name = "R1_A2019.json",
     df.to_excel(writer,'Sheet1',header=True,index=True)
     writer.save()
 
-#wrapper(file_name = "FULL_W2019.json",
-#            type = 'json',
-#            out_file = "data_W2019.xls",
-#            tourn = "WIM",
-#            court = "G",
-#            rd = None,
-#            all_rounds = True)
+# wrapper(file_name = "Full_F2020.json",
+#               type = 'json',
+#               out_file = "data_F2020.xls",
+#               tourn = "FRE",
+#               court = "C",
+#               rd = None,
+#               all_rounds = True)
 
 #file_name = {'r1':['R Federer', 'M Čilić']}
 #file_name = 'C_picks_U2016.json'

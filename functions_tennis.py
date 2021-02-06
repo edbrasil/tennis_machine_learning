@@ -55,7 +55,7 @@ def currentRank(rank, current_rank):
 def ModelRank(p_dict, model_file, pasttourn=True):
     model = joblib.load(model_file)    
     wrapper(p_dict, type = 'dict', out_file = '_temp.xls',
-        tourn = 'US', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
+        tourn = 'AUS', court = 'H', rd = list(p_dict.keys())[0], all_rounds = False) 
     
     df_t = pd.read_excel('_temp.xls', header = 0, index_col = 0)
     

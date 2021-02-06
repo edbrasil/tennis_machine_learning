@@ -30,7 +30,7 @@ Set model type (currank, logreg, neunet, ranfor, xg_cl, eclf)
 """
 mod_type = "xg_cl"
 pasttourn = False
-j_file = 'R1_A2020.json' #JSON file containing round 1
+j_file = 'R1_A2021.json' #JSON file containing round 1
 
 """
 Loop over data frame, need two player names at a time
@@ -55,7 +55,7 @@ for i in range(128):
     try:
         df_r1["Full Name"][i] = df_lu["Full Name"].loc[df_lu.loc[df_lu["Name"] == player_1].index].values[0]
     except (ValueError, IndexError):
-        print("Value Error: " + player_1)
+        print("Value Error: " + '"' + player_1 + '"')
 
 #print (df_r1)
 

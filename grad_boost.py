@@ -30,8 +30,9 @@ from sklearn.model_selection import GridSearchCV
 
 #Training tournaments
 
-tourn_list = ['U2016','A2017','F2017','W2017', 'U2017','A2018','F2018',\
-              'W2018','U2018','A2019','F2019','W2019','U2019','A2020','U2020']
+tourn_list = ['A2017','F2017','W2017', 'U2017','A2018','F2018',\
+              'W2018','U2018','A2019','F2019','W2019','U2019','A2020','U2020',
+              'F2020']
 df_list = []
 
 for f in tourn_list:
